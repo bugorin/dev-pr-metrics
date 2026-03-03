@@ -4,17 +4,17 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.security.PrivateKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-@Service
-public class GitHubOrgService {
+@Component
+public class GitHubHttpClient {
+
     private final RestClient gitHubApiClient;
     private final String organization;
     private final long appId;
@@ -23,7 +23,7 @@ public class GitHubOrgService {
     private String cachedInstallationToken;
     private Instant cachedInstallationTokenExpiresAt;
 
-    public GitHubOrgService(
+    public GitHubHttpClient(
             @Value("${github.org}") String organization,
             @Value("${github.app-id}") long appId,
             @Value("${github.installation-id}") long installationId,
@@ -43,27 +43,13 @@ public class GitHubOrgService {
         return organization;
     }
 
-    public List<GitHubRepository> listOrganizationRepositories() {
-        JsonNode response = gitHubApiClient.get()
-                .uri("/orgs/{org}/repos?per_page=100&sort=full_name", organization)
+    public JsonNode get(GithubRequest request) {
+        return gitHubApiClient.get()
+                .uri(request.getUrl())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + resolveInstallationToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(JsonNode.class);
-
-        List<GitHubRepository> repositories = new ArrayList<>();
-        if (response == null || !response.isArray()) {
-            return repositories;
-        }
-
-        for (JsonNode node : response) {
-            repositories.add(new GitHubRepository(
-                    node.path("name").asText(""),
-                    node.path("html_url").asText("#"),
-                    node.path("private").asBoolean(false),
-                    node.path("default_branch").asText("main")));
-        }
-        return repositories;
     }
 
     private synchronized String resolveInstallationToken() {
@@ -96,9 +82,6 @@ public class GitHubOrgService {
                 .withIssuer(String.valueOf(appId))
                 .withIssuedAt(java.util.Date.from(now.minusSeconds(30)))
                 .withExpiresAt(java.util.Date.from(now.plusSeconds(9 * 60)))
-                .sign(Algorithm.RSA256(null, (java.security.interfaces.RSAPrivateKey) privateKey));
-    }
-
-    public record GitHubRepository(String name, String htmlUrl, boolean isPrivate, String defaultBranch) {
+                .sign(Algorithm.RSA256(null, (RSAPrivateKey) privateKey));
     }
 }
