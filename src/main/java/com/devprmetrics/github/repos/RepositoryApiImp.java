@@ -79,8 +79,8 @@ public class RepositoryApiImp implements RepositoryApi {
     }
 
     @Override
-    public List<RepositoryPull> listPullRequests(String owner, String repository) {
-        JsonNode response = gitHubHttpClient.get(new RepositoryPullsRequest(owner, repository));
+    public List<RepositoryPull> listPullRequests(RepositoryPullsRequest  request) {
+        JsonNode response = gitHubHttpClient.get(request);
         List<RepositoryPull> pulls = new ArrayList<>();
         if (response == null || !response.isArray()) {
             return pulls;

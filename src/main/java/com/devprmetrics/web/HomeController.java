@@ -32,13 +32,6 @@ public class HomeController {
     public String repos(Model model) {
         List<Repository> repositories = repositoryApi.listRepositories("bugorindevtest");
 
-        for (Repository repository : repositories) {
-            List<RepositoryPull> bugorindevtest = repositoryApi.listPullRequests("bugorindevtest", repository.name());
-            for (RepositoryPull pull : bugorindevtest) {
-                System.out.println(pull.authorLogin());
-            }
-        }
-
         model.addAttribute("title", "Repositórios da Organização");
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("organization", "");

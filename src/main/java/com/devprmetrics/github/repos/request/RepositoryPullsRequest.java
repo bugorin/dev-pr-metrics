@@ -5,9 +5,21 @@ import java.util.StringJoiner;
 
 public class RepositoryPullsRequest implements GithubRequest {
 
+    public enum State {
+        OPEN("open"),
+        CLOSED("closed"),
+        ALL("all");
+
+        private final String paramName;
+
+        State(String paramName) {
+            this.paramName = paramName;
+        }
+    }
+
     private final String owner;
     private final String repository;
-    private final String state;
+    private final State state;
     private final String sort;
     private final String direction;
     private final Long perPage;
@@ -16,7 +28,7 @@ public class RepositoryPullsRequest implements GithubRequest {
     public RepositoryPullsRequest(
             String owner,
             String repository,
-            String state,
+            State state,
             String sort,
             String direction,
             Long perPage,
@@ -31,7 +43,7 @@ public class RepositoryPullsRequest implements GithubRequest {
     }
 
     public RepositoryPullsRequest(String owner, String repository) {
-        this(owner, repository, "open", "created", "desc", 30L, 1L);
+        this(owner, repository, State.ALL, "created", "desc", 30L, 1L);
     }
 
     @Override
@@ -40,7 +52,7 @@ public class RepositoryPullsRequest implements GithubRequest {
 
         StringJoiner query = new StringJoiner("&");
         if (state != null) {
-            query.add("state=" + state);
+            query.add("state=" + state.paramName);
         }
         if (sort != null) {
             query.add("sort=" + sort);

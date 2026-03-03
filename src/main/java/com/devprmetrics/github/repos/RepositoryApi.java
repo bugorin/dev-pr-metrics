@@ -9,6 +9,8 @@ import com.devprmetrics.github.repos.models.RepositoryIssue;
 import com.devprmetrics.github.repos.models.RepositoryPull;
 import com.devprmetrics.github.repos.models.RepositoryPullFile;
 import com.devprmetrics.github.repos.models.RepositoryPullReview;
+import com.devprmetrics.github.repos.request.RepositoryPullsRequest;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ public interface RepositoryApi {
 
     List<RepositoryBranch> listBranches(String owner, String repository);
 
-    List<RepositoryPull> listPullRequests(String owner, String repository);
+    List<RepositoryPull> listPullRequests(RepositoryPullsRequest request);
 
     RepositoryPull getPullRequest(String owner, String repository, long pullNumber);
 

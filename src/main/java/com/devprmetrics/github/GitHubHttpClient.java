@@ -44,12 +44,16 @@ public class GitHubHttpClient {
     }
 
     public JsonNode get(GithubRequest request) {
-        return gitHubApiClient.get()
+        JsonNode body = gitHubApiClient.get()
                 .uri(request.getUrl())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + resolveInstallationToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(JsonNode.class);
+
+        System.out.println(request.getUrl());
+        System.out.println(body.toPrettyString());
+        return body;
     }
 
     private synchronized String resolveInstallationToken() {
