@@ -27,7 +27,7 @@
                 </div>
                 <div class="list-group-item">
                     <strong>Visibilidade:</strong>
-                    <span th:text="${repository.isPrivate} ? 'Privado' : 'Público'">Público</span>
+                    <span th:text="${repository.isPrivate()} ? 'Privado' : 'Público'">Público</span>
                 </div>
                 <div class="list-group-item">
                     <strong>Branch padrão:</strong>
@@ -49,19 +49,57 @@
 
             <ul class="list-group" th:unless="${#lists.isEmpty(pullsWithReviews)}">
                 <li class="list-group-item" th:each="item : ${pullsWithReviews}">
-                    <a th:href="${item.pull.htmlUrl}" target="_blank" rel="noopener noreferrer"
-                       th:text="'#' + ${item.pull.number} + ' - ' + ${item.pull.title}">#1 - Título do PR</a>
-                    <small class="d-block text-body-secondary mb-2" th:text="'Autor: ' + ${item.pull.authorLogin}">Autor: user</small>
-                    <small class="d-block text-body-secondary mb-2" th:text="'Estado: ' + ${item.pull.state}">Estado: open</small>
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div class="flex-grow-1">
+                            <a th:href="${item.pull.htmlUrl}" target="_blank" rel="noopener noreferrer"
+                               th:text="'#' + ${item.pull.number} + ' - ' + ${item.pull.title}">#1 - Título do PR</a>
+                            <small class="d-block text-body-secondary mb-2" th:text="'Autor: ' + ${item.pull.user.login}">Autor: user</small>
+                            <small class="d-block text-body-secondary mb-2" th:text="'ID do autor: ' + ${item.pull.user.id}">ID do autor: 0</small>
+                            <small class="d-block text-body-secondary mb-2" th:text="'Estado: ' + ${item.pull.state}">Estado: open</small>
+                            <small class="d-block text-body-secondary mb-2" th:text="'Criado em: ' + ${item.pull.createdAt}">Criado em: 2026-03-03T10:00:00Z</small>
+                            <small class="d-block text-body-secondary mb-2" th:text="'Última atualização: ' + ${item.pull.updatedAt}">Última atualização: 2026-03-03T12:00:00Z</small>
+                            <small class="d-block text-body-secondary mb-2">
+                                <span th:text="'Comentários em aberto: '"></span>
+                                <span th:classappend="${item.hasOpenReviewComments} ? 'text-danger' : 'text-success'"
+                                      th:text="${item.hasOpenReviewComments} ? 'sim' : 'não'">não</span>
+                                <span th:text="' (' + ${item.openReviewComments} + ')'">(0)</span>
+                            </small>
+                            <small class="d-block text-body-secondary mb-2">
+                                <span th:text="'Linhas modificadas: ' + ${item.changedLines} + ' ('">Linhas modificadas: 0 (</span>
+                                <span class="text-success" th:text="'+' + ${item.additions}">+0</span>
+                                <span th:text="' / '"> / </span>
+                                <span class="text-danger" th:text="'-' + ${item.deletions}">-0</span>
+                                <span>)</span>
+                            </small>
+                            <small class="d-block text-body-secondary mb-2" th:text="'Arquivos modificados: ' + ${item.changedFiles}">
+                                Arquivos modificados: 0
+                            </small>
 
-                    <strong>Revisores:</strong>
-                    <ul class="mb-0 mt-1" th:if="${!#lists.isEmpty(item.reviews)}">
-                        <li th:each="review : ${item.reviews}">
-                            <span th:text="${review.authorLogin}">reviewer</span>
-                            <small class="text-body-secondary" th:text="'(' + ${review.state} + ')'">(APPROVED)</small>
-                        </li>
-                    </ul>
-                    <span class="text-body-secondary" th:if="${#lists.isEmpty(item.reviews)}">sem reviews</span>
+                            <strong>Revisores:</strong>
+                            <ul class="mb-0 mt-1" th:if="${!#lists.isEmpty(item.reviews)}">
+                                <li th:each="review : ${item.reviews}">
+                                    <div class="d-inline-flex align-items-center gap-2">
+                                        <img th:if="${review.user != null && review.user.avatarUrl != null}"
+                                             th:src="${review.user.avatarUrl}"
+                                             th:alt="'Avatar de ' + ${review.user.login}"
+                                             class="rounded-circle border"
+                                             width="24"
+                                             height="24">
+                                        <span th:text="${review.user.login}">reviewer</span>
+                                        <small class="text-body-secondary" th:text="'ID: ' + ${review.user.id}">ID: 0</small>
+                                        <small class="text-body-secondary" th:text="'(' + ${review.state} + ')'">(APPROVED)</small>
+                                    </div>
+                                </li>
+                            </ul>
+                            <span class="text-body-secondary" th:if="${#lists.isEmpty(item.reviews)}">sem reviews</span>
+                        </div>
+                        <img th:if="${item.pull.user != null && item.pull.user.avatarUrl != null}"
+                             th:src="${item.pull.user.avatarUrl}"
+                             th:alt="'Avatar de ' + ${item.pull.user.login}"
+                             class="rounded-circle border"
+                             width="48"
+                             height="48">
+                    </div>
                 </li>
             </ul>
 
