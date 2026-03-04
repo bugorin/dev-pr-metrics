@@ -1,8 +1,9 @@
 CREATE TABLE `Pr` (
     id BIGINT NOT NULL,
     github_author_id BIGINT NOT NULL,
-    github_repository_id BIGINT NULL,
+    github_repository_id BIGINT NOT NULL,
     github_status ENUM('OPEN','CLOSED') NOT NULL,
+    github_title VARCHAR(255) NULL,
     github_created_at DATETIME(6) NOT NULL,
     github_updated_at DATETIME(6) NOT NULL,
     infos JSON NULL,

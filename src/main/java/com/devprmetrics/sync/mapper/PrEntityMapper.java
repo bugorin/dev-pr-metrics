@@ -24,6 +24,12 @@ public record PrEntityMapper() {
                     UserEntityMapper.mapper(pullRequest.getUser()),
                     repository,
                     mapToStatus(pullRequest.getState()),
+                    pullRequest.getTitle(),
+                    pullRequest.getHtmlUrl() != null ? pullRequest.getHtmlUrl().toString() : null,
+                    pullRequest.getAdditions(),
+                    pullRequest.getDeletions(),
+                    pullRequest.getChangedFiles(),
+                    pullRequest.getReviewComments(),
                     toLocalDateTime(pullRequest.getCreatedAt()),
                     toLocalDateTime(pullRequest.getUpdatedAt())
             );
