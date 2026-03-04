@@ -1,5 +1,7 @@
 package com.devprmetrics.domain.pr;
 
+import com.devprmetrics.domain.review.Reviewer;
+import com.devprmetrics.domain.review.ReviewerStatus;
 import com.devprmetrics.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -7,10 +9,7 @@ import org.kohsuke.github.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.devprmetrics.util.LocalDateTimeUtils.toLocalDateTime;
 
@@ -126,13 +125,16 @@ public class Pr {
     public void addOrUpdate(User user, GHPullRequestReview reviewer) throws IOException {
         ReviewerStatus status = ReviewerStatus.from(reviewer.getState());
         LocalDateTime submittedAt = toLocalDateTime(reviewer.getSubmittedAt());
-        for (Reviewer existing : reviewers) {
-            if (existing.getUser().getId().equals(user.getId())) {
-                existing.setStatus(status);
-                existing.setSubmittedAt(submittedAt);
-                return;
-            }
+
+        Optional<Reviewer> existing = reviewers.stream()
+                .filter(r -> r.isUser(user))
+                .findFirst();
+
+        if(existing.isPresent()) {
+            existing.get().merge(reviewer);
+            return;
         }
+
         this.reviewers.add(new Reviewer(this, user, status, submittedAt));
     }
 }

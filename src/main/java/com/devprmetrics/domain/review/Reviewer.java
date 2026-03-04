@@ -1,6 +1,8 @@
-package com.devprmetrics.domain.pr;
+package com.devprmetrics.domain.review;
 
+import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.user.User;
+import com.devprmetrics.util.LocalDateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.kohsuke.github.GHPullRequestReview;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -80,5 +85,14 @@ public class Reviewer {
 
     public void setSubmittedAt(LocalDateTime submittedAt) {
         this.submittedAt = submittedAt;
+    }
+
+    public void merge(GHPullRequestReview reviewer) throws IOException {
+        this.status = ReviewerStatus.from(reviewer.getState());
+        this.submittedAt = LocalDateTimeUtils.toLocalDateTime(reviewer.getSubmittedAt());
+    }
+
+    public boolean isUser(User user) {
+        return this.user.getId().equals(user.getId());
     }
 }

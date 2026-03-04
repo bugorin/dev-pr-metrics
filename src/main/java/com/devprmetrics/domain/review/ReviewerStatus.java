@@ -1,4 +1,4 @@
-package com.devprmetrics.domain.pr;
+package com.devprmetrics.domain.review;
 
 import org.kohsuke.github.GHPullRequestReviewState;
 
