@@ -9,11 +9,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/prs")
 public class PrApi {
 
     private final PrRepository prRepository;
@@ -23,7 +21,7 @@ public class PrApi {
     }
 
     @Operation(summary = "Lista PRs com paginação e ordenação")
-    @GetMapping
+    @GetMapping("/api/prs")
     public Page<PrApiResponse> listAll(
             @ParameterObject
             @PageableDefault(page = 0, size = 20, sort = "id") Pageable pageable) {
@@ -32,7 +30,7 @@ public class PrApi {
     }
 
     @Operation(summary = "Busca PR por id")
-    @GetMapping("/{id}")
+    @GetMapping("/api/prs/{id}")
     public ResponseEntity<PrApiResponse> findById(@PathVariable Long id) {
         return prRepository.findById(id)
                 .map(PrApiResponse::from)

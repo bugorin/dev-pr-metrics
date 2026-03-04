@@ -15,11 +15,9 @@ import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
 public class RepositoryApi {
 
     private final GitHub gitHub;
@@ -30,7 +28,7 @@ public class RepositoryApi {
         this.organization = organization;
     }
 
-    @GetMapping("/repository/{name}")
+    @GetMapping("/api/repository/{name}")
     public RepositoryResponse repository(@PathVariable String name) throws IOException {
         GHRepository repository = gitHub.getRepository(organization + "/" + name);
         Instant lastMonthCutoff = Instant.now().minus(30, ChronoUnit.DAYS);
