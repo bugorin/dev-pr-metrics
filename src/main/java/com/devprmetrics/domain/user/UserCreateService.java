@@ -1,7 +1,5 @@
 package com.devprmetrics.domain.user;
 
-import com.devprmetrics.sync.mapper.UserEntityMapper;
-import org.kohsuke.github.GHUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +19,16 @@ public class UserCreateService {
     }
 
     @Transactional
-    public Optional<User> findOrCreated(GHUser ghUser) {
-        if (ghUser == null) throw new IllegalArgumentException("GHUser is null");
-        return this.findOrCreated(List.of(ghUser)).stream().findFirst();
+    public Optional<User> findOrCreated(User user) {
+        return this.findOrCreated(List.of(user)).stream().findFirst();
     }
 
     @Transactional
-    public List<User> findOrCreated(List<GHUser> ghUsers) {
-        if (ghUsers == null || ghUsers.isEmpty()) return List.of();
+    public List<User> findOrCreated(List<User> users) {
+        if (users == null || users.isEmpty()) return List.of();
 
-        Set<Long> githubIds = ghUsers.stream()
-                .map(GHUser::getId)
+        Set<Long> githubIds = users.stream()
+                .map(User::getId)
                 .collect(toSet());
 
         Set<Long> alreadySaved =
@@ -41,8 +38,7 @@ public class UserCreateService {
                         .collect(toSet());
 
         Set<User> usersToCreate =
-                ghUsers.stream()
-                        .map(UserEntityMapper::mapper)
+                users.stream()
                         .filter(user -> !alreadySaved.contains(user.getId()))
                         .collect(toSet());
 

@@ -3,6 +3,7 @@ package com.devprmetrics.sync;
 import com.devprmetrics.domain.user.User;
 import com.devprmetrics.domain.user.UserCreateService;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class SyncPrService {
 
     private final GitHub gitHub;
-    private final UserCreateService userCreateService;
     private final PrHandleService prHandleService;
     private final String organization;
 
@@ -29,7 +29,6 @@ public class SyncPrService {
             @Value("${github.org}") String organization
     ) {
         this.gitHub = gitHub;
-        this.userCreateService = userCreateService;
         this.prHandleService = prHandleService;
         this.organization = organization;
     }
@@ -41,22 +40,11 @@ public class SyncPrService {
                 .list()
                 .toList();
 
-        Set<GHUser> reviewers = new HashSet<>();
+
         for (GHPullRequest ghPullRequest : ghPullRequests) {
             prHandleService.createOrMerge(ghPullRequest);
-
-            for (GHPullRequestReview ghPullRequestReview : listReviews(ghPullRequest)) {
-                GHUser user = ghPullRequestReview.getUser();
-                if (user != null) {
-                    reviewers.add(user);
-                }
-            }
         }
 
-        return userCreateService.findOrCreated(List.copyOf(reviewers));
-    }
-
-    private List<GHPullRequestReview> listReviews(GHPullRequest pullRequest) throws IOException {
-        return pullRequest.listReviews().toList();
+        return Collections.emptyList();
     }
 }
