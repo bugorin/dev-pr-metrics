@@ -1,4 +1,4 @@
-package com.devprmetrics.web;
+package com.devprmetrics.api;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -13,24 +13,25 @@ import org.kohsuke.github.GHPullRequestReview;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-public class RepositoryController {
+@RestController
+@RequestMapping("/api")
+public class RepositoryApi {
 
     private final GitHub gitHub;
     private final String organization;
 
-    public RepositoryController(GitHub gitHub, @Value("${github.org}") String organization) {
+    public RepositoryApi(GitHub gitHub, @Value("${github.org}") String organization) {
         this.gitHub = gitHub;
         this.organization = organization;
     }
 
     @GetMapping("/repository/{name}")
-    public String repository(@PathVariable String name, Model model) throws IOException {
+    public RepositoryResponse repository(@PathVariable String name) throws IOException {
         GHRepository repository = gitHub.getRepository(organization + "/" + name);
         Instant lastMonthCutoff = Instant.now().minus(30, ChronoUnit.DAYS);
 
@@ -42,8 +43,6 @@ public class RepositoryController {
             List<GHPullRequestReview> reviews = new ArrayList<>();
 
             for (GHPullRequestReview review : pull.listReviews()) {
-                System.out.println(review);
-
                 reviews.add(review);
             }
             int additions = pull.getAdditions();
@@ -63,13 +62,22 @@ public class RepositoryController {
 
         Map<String, Long> languages = repository.listLanguages();
 
-        model.addAttribute("title", "Detalhe do Repositório");
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("organization", organization);
-        model.addAttribute("repository", repository);
-        model.addAttribute("pullsWithReviews", pullsWithReviews);
-        model.addAttribute("languages", languages);
-        return "repository";
+        return new RepositoryResponse(
+                "Detalhe do Repositório",
+                LocalDate.now(),
+                organization,
+                repository,
+                pullsWithReviews,
+                languages);
+    }
+
+    public record RepositoryResponse(
+            String title,
+            LocalDate today,
+            String organization,
+            GHRepository repository,
+            List<PullWithReviews> pullsWithReviews,
+            Map<String, Long> languages) {
     }
 
     public record PullWithReviews(

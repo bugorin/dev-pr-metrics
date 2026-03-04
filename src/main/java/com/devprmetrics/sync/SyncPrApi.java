@@ -3,6 +3,7 @@ package com.devprmetrics.sync;
 import com.devprmetrics.domain.user.User;
 import java.io.IOException;
 import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
-public class SyncPrController {
+public class SyncPrApi {
 
     private final SyncPrService syncPrService;
 
-    public SyncPrController(SyncPrService syncPrService) {
+    public SyncPrApi(SyncPrService syncPrService) {
         this.syncPrService = syncPrService;
     }
 

@@ -4,6 +4,7 @@ import com.devprmetrics.domain.review.Reviewer;
 import com.devprmetrics.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHPullRequestReview;
@@ -15,6 +16,7 @@ import java.util.*;
 import static com.devprmetrics.util.LocalDateTimeUtils.toLocalDateTime;
 
 @Entity
+@Data
 public class Pr {
 
     @Id
@@ -41,8 +43,7 @@ public class Pr {
     @OneToMany(mappedBy = "pr", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reviewer> reviewers = new ArrayList<>();
 
-    protected Pr() {
-    }
+    protected Pr() {}
 
     public Pr(int id, User author, GHIssueState githubStatus,
                Date githubCreatedAt, Date githubUpdatedAt,
@@ -52,62 +53,6 @@ public class Pr {
         this.githubStatus = PrStatus.from(githubStatus);
         this.githubCreatedAt = toLocalDateTime(githubCreatedAt);
         this.githubUpdatedAt = toLocalDateTime(githubUpdatedAt);
-        this.infos = infos;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public PrStatus getGithubStatus() {
-        return githubStatus;
-    }
-
-    public void setGithubStatus(GHIssueState githubStatus) {
-        this.githubStatus = PrStatus.from(githubStatus);
-    }
-
-    public LocalDateTime getGithubCreatedAt() {
-        return githubCreatedAt;
-    }
-
-    public void setGithubCreatedAt(LocalDateTime githubCreatedAt) {
-        this.githubCreatedAt = githubCreatedAt;
-    }
-
-    public void setGithubCreatedAt(Date githubCreatedAt) {
-        this.setGithubCreatedAt(toLocalDateTime(githubCreatedAt));
-    }
-
-    public LocalDateTime getGithubUpdatedAt() {
-        return githubUpdatedAt;
-    }
-
-    public void setGithubUpdatedAt(LocalDateTime githubUpdatedAt) {
-        this.githubUpdatedAt = githubUpdatedAt;
-    }
-
-    public void setGithubUpdatedAt(Date githubUpdatedAt) {
-        this.setGithubUpdatedAt(toLocalDateTime(githubUpdatedAt));
-    }
-
-    public List<Reviewer> getReviewers() {
-        return reviewers;
-    }
-
-    public String getInfos() {
-        return infos;
-    }
-
-    public void setInfos(String infos) {
         this.infos = infos;
     }
 
@@ -134,5 +79,25 @@ public class Pr {
         }
 
         this.reviewers.add(new Reviewer(this, user, reviewer));
+    }
+
+    public void setGithubStatus(GHIssueState githubStatus) {
+        this.githubStatus = PrStatus.from(githubStatus);
+    }
+
+    public void setGithubCreatedAt(LocalDateTime githubCreatedAt) {
+        this.githubCreatedAt = githubCreatedAt;
+    }
+
+    public void setGithubCreatedAt(Date githubCreatedAt) {
+        this.setGithubCreatedAt(toLocalDateTime(githubCreatedAt));
+    }
+
+    public void setGithubUpdatedAt(LocalDateTime githubUpdatedAt) {
+        this.githubUpdatedAt = githubUpdatedAt;
+    }
+
+    public void setGithubUpdatedAt(Date githubUpdatedAt) {
+        this.setGithubUpdatedAt(toLocalDateTime(githubUpdatedAt));
     }
 }
