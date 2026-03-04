@@ -47,6 +47,18 @@ public class Pr {
     @Column(name = "github_title", length = 255)
     private String githubTitle;
 
+    @Column(name = "github_draft", nullable = false)
+    private boolean githubDraft;
+
+    @Column(name = "github_merged", nullable = false)
+    private boolean githubMerged;
+
+    @Column(name = "github_merged_at")
+    private LocalDateTime githubMergedAt;
+
+    @Column(name = "github_closed_at")
+    private LocalDateTime githubClosedAt;
+
     @Column(name = "github_created_at", nullable = false)
     private LocalDateTime githubCreatedAt;
 
@@ -66,20 +78,35 @@ public class Pr {
     }
 
     public Pr(Long id, User author, Repo repository, PrStatus githubStatus,
-              String githubTitle, String githubHtmlUrl, int githubAdditions,
-              int githubDeletions, int githubFileChanges, int githubOpenReviewComments,
+              String githubTitle, boolean githubDraft, boolean githubMerged,
+              LocalDateTime githubMergedAt, LocalDateTime githubClosedAt,
+              String githubHtmlUrl, int githubAdditions, int githubDeletions,
+              int githubFileChanges, int githubOpenReviewComments,
+              int githubComments, int githubCommits,
+              String githubBaseRef, String githubHeadRef,
+              List<String> githubLabels, List<Long> githubRequestedReviewers,
               LocalDateTime githubCreatedAt, LocalDateTime githubUpdatedAt) {
         this.id = id;
         this.author = author;
         this.repository = repository;
         this.githubStatus = githubStatus;
         this.githubTitle = githubTitle;
+        this.githubDraft = githubDraft;
+        this.githubMerged = githubMerged;
+        this.githubMergedAt = githubMergedAt;
+        this.githubClosedAt = githubClosedAt;
         this.info = new PrInfo(
                 githubHtmlUrl,
                 githubAdditions,
                 githubDeletions,
                 githubFileChanges,
-                githubOpenReviewComments
+                githubOpenReviewComments,
+                githubComments,
+                githubCommits,
+                githubBaseRef,
+                githubHeadRef,
+                githubLabels,
+                githubRequestedReviewers
         );
         this.githubCreatedAt = githubCreatedAt;
         this.githubUpdatedAt = githubUpdatedAt;
@@ -89,12 +116,22 @@ public class Pr {
         this.setRepository(pr.getRepository());
         this.setGithubStatus(pr.getGithubStatus());
         this.setGithubTitle(pr.getGithubTitle());
+        this.setGithubDraft(pr.isGithubDraft());
+        this.setGithubMerged(pr.isGithubMerged());
+        this.setGithubMergedAt(pr.getGithubMergedAt());
+        this.setGithubClosedAt(pr.getGithubClosedAt());
         this.info = new PrInfo(
                 pr.getGithubHtmlUrl(),
                 pr.getGithubAdditions(),
                 pr.getGithubDeletions(),
                 pr.getGithubFileChanges(),
-                pr.getGithubOpenReviewComments()
+                pr.getGithubOpenReviewComments(),
+                pr.getGithubComments(),
+                pr.getGithubCommits(),
+                pr.getGithubBaseRef(),
+                pr.getGithubHeadRef(),
+                pr.getGithubLabels(),
+                pr.getGithubRequestedReviewers()
         );
         this.setGithubCreatedAt(pr.getGithubCreatedAt());
         this.setGithubUpdatedAt(pr.getGithubUpdatedAt());
@@ -126,6 +163,30 @@ public class Pr {
         return this.info.getGithubHtmlUrl();
     }
 
+    public int getGithubComments() {
+        return this.info.getGithubComments();
+    }
+
+    public int getGithubCommits() {
+        return this.info.getGithubCommits();
+    }
+
+    public String getGithubBaseRef() {
+        return this.info.getGithubBaseRef();
+    }
+
+    public String getGithubHeadRef() {
+        return this.info.getGithubHeadRef();
+    }
+
+    public List<String> getGithubLabels() {
+        return this.info.getGithubLabels();
+    }
+
+    public List<Long> getGithubRequestedReviewers() {
+        return this.info.getGithubRequestedReviewers();
+    }
+
     public void addOrUpdate(Reviewer reviewer) {
         Optional<Reviewer> existing = reviewers.stream()
                 .filter(r -> r.isUser(reviewer.getUser()))
@@ -148,5 +209,11 @@ public class Pr {
         private int githubDeletions;
         private int githubFileChanges;
         private int githubOpenReviewComments;
+        private int githubComments;
+        private int githubCommits;
+        private String githubBaseRef;
+        private String githubHeadRef;
+        private List<String> githubLabels = new ArrayList<>();
+        private List<Long> githubRequestedReviewers = new ArrayList<>();
     }
 }

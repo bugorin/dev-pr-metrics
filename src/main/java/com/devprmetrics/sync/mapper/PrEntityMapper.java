@@ -3,11 +3,12 @@ package com.devprmetrics.sync.mapper;
 import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.pr.PrStatus;
 import com.devprmetrics.domain.repo.Repo;
+import java.util.List;
 import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHPullRequestReview;
-
-import java.util.List;
+import org.kohsuke.github.GHUser;
 
 import static com.devprmetrics.config.LocalDateTimeUtils.toLocalDateTime;
 
@@ -19,22 +20,40 @@ public record PrEntityMapper() {
                 throw new IllegalArgumentException("GHPullRequest is null");
             }
 
+            List<String> githubLabels = pullRequest.getLabels().stream()
+                    .map(GHLabel::getName)
+                    .toList();
+
+            List<Long> githubRequestedReviewers = pullRequest.getRequestedReviewers().stream()
+                    .map(GHUser::getId)
+                    .toList();
+
+            List<GHPullRequestReview> ghReviews = pullRequest.listReviews().toList();
             Pr pr = new Pr(
                     pullRequest.getId(),
                     UserEntityMapper.mapper(pullRequest.getUser()),
                     repository,
                     mapToStatus(pullRequest.getState()),
                     pullRequest.getTitle(),
+                    pullRequest.isDraft(),
+                    pullRequest.isMerged(),
+                    toLocalDateTime(pullRequest.getMergedAt()),
+                    toLocalDateTime(pullRequest.getClosedAt()),
                     pullRequest.getHtmlUrl() != null ? pullRequest.getHtmlUrl().toString() : null,
                     pullRequest.getAdditions(),
                     pullRequest.getDeletions(),
                     pullRequest.getChangedFiles(),
                     pullRequest.getReviewComments(),
+                    pullRequest.getCommentsCount(),
+                    pullRequest.getCommits(),
+                    pullRequest.getBase().getRef(),
+                    pullRequest.getHead().getRef(),
+                    githubLabels,
+                    githubRequestedReviewers,
                     toLocalDateTime(pullRequest.getCreatedAt()),
                     toLocalDateTime(pullRequest.getUpdatedAt())
             );
 
-            List<GHPullRequestReview> ghReviews = pullRequest.listReviews().toList();
             for (GHPullRequestReview review : ghReviews) {
                 pr.addOrUpdate(ReviewerEntityMapper.mapper(pr, review));
             }
@@ -55,4 +74,5 @@ public record PrEntityMapper() {
             default -> throw new IllegalArgumentException("Unknown GHIssueState: " + state);
         };
     }
+
 }
