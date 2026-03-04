@@ -1,4 +1,4 @@
-package com.devprmetrics.sync;
+package com.devprmetrics.sync.service;
 
 import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.pr.PrRepository;
@@ -39,7 +39,7 @@ public class PrHandleService {
         return pr;
     }
 
-    public Pr create(Repo repository, GHPullRequest ghPullRequest) {
+    private Pr create(Repo repository, GHPullRequest ghPullRequest) {
         Pr pr = PrEntityMapper.mapper(repository, ghPullRequest);
         userCreateService.findOrCreated(pr.getAuthor());
         List<User> reviewrs = pr.getReviewers().stream().map(Reviewer::getUser).toList();

@@ -1,4 +1,4 @@
-package com.devprmetrics.sync;
+package com.devprmetrics.sync.service;
 
 import com.devprmetrics.domain.repo.Repo;
 import com.devprmetrics.domain.repo.RepoRepository;
@@ -28,8 +28,7 @@ public class RepoHandleService {
         return repoRepository.save(merged);
     }
 
-    @Transactional
-    public Repo create(GHRepository ghRepository) {
+    private Repo create(GHRepository ghRepository) {
         return repoRepository.save(RepoEntityMapper.mapper(ghRepository));
     }
 }

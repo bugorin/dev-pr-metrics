@@ -1,10 +1,10 @@
-package com.devprmetrics.sync;
+package com.devprmetrics.sync.http;
 
+import com.devprmetrics.config.Envie;
 import com.devprmetrics.domain.repo.Repo;
-import com.devprmetrics.domain.user.User;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import com.devprmetrics.sync.service.PrHandleService;
+import com.devprmetrics.sync.service.RepoHandleService;
+import lombok.AllArgsConstructor;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHRepository;
@@ -12,28 +12,20 @@ import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.List;
+
 @Service
-public class SyncPrService {
+@AllArgsConstructor
+public class SyncPrHttpService {
 
     private final GitHub gitHub;
+    private final Envie envie;
     private final PrHandleService prHandleService;
     private final RepoHandleService repoHandleService;
-    private final String organization;
 
-    public SyncPrService(
-            GitHub gitHub,
-            PrHandleService prHandleService,
-            RepoHandleService repoHandleService,
-            @Value("${github.org}") String organization
-    ) {
-        this.gitHub = gitHub;
-        this.prHandleService = prHandleService;
-        this.repoHandleService = repoHandleService;
-        this.organization = organization;
-    }
-
-    public List<User> syncReviewers(String repositoryName) throws IOException {
-        GHRepository ghRepository = gitHub.getRepository(organization + "/" + repositoryName);
+    public void sync(String repoName) throws IOException {
+        GHRepository ghRepository = gitHub.getRepository(envie.getOrganization() + "/" + repoName);
         Repo repository = repoHandleService.createOrMerge(ghRepository);
 
         List<GHPullRequest> ghPullRequests = ghRepository
@@ -45,7 +37,5 @@ public class SyncPrService {
         for (GHPullRequest ghPullRequest : ghPullRequests) {
             prHandleService.createOrMerge(repository, ghPullRequest);
         }
-
-        return Collections.emptyList();
     }
 }
