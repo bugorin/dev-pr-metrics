@@ -1,5 +1,6 @@
 package com.devprmetrics.domain.user;
 
+import com.devprmetrics.sync.mapper.UserEntityMapper;
 import org.kohsuke.github.GHUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,7 @@ public class UserCreateService {
 
         Set<User> usersToCreate =
                 ghUsers.stream()
-                        .map(User::new)
+                        .map(UserEntityMapper::mapper)
                         .filter(user -> !alreadySaved.contains(user.getId()))
                         .collect(toSet());
 

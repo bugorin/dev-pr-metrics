@@ -1,6 +1,5 @@
 package com.devprmetrics.sync;
 
-import com.devprmetrics.domain.pr.PrHandleService;
 import com.devprmetrics.domain.user.User;
 import com.devprmetrics.domain.user.UserCreateService;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.devprmetrics.util;
+package com.devprmetrics.config;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

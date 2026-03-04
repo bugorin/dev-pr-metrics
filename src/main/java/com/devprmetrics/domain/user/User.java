@@ -1,13 +1,10 @@
 package com.devprmetrics.domain.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import org.kohsuke.github.GHUser;
+import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class User {
 
     @Id
@@ -20,36 +17,11 @@ public class User {
     @Column(name = "role", nullable = false, length = 20)
     private UserRole role;
 
-    protected User() {
-    }
+    protected User() {}
 
-    public User(GHUser ghUser) {
-        this.id = ghUser.getId();
-        this.name = ghUser.getLogin();
-        this.role = UserRole.REGULAR;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public User(Long id, String name) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
+        this.role = UserRole.REGULAR;
     }
 }
