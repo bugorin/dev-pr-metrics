@@ -4,6 +4,7 @@ import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.review.Reviewer;
 import com.devprmetrics.domain.review.ReviewerStatus;
 import org.kohsuke.github.GHPullRequestReview;
+import org.kohsuke.github.GHPullRequestReviewState;
 
 import static com.devprmetrics.config.LocalDateTimeUtils.toLocalDateTime;
 
@@ -18,11 +19,25 @@ public record ReviewerEntityMapper() {
             return new Reviewer(
                    pr,
                     UserEntityMapper.mapper(ghReview.getUser()),
-                    ReviewerStatus.from(ghReview.getState()),
+                    mapper(ghReview.getState()),
                     toLocalDateTime(ghReview.getSubmittedAt())
             );
         }catch (Exception e) {
             throw new IllegalArgumentException("Could not map ghReview to reviewer entity", e);
         }
+    }
+
+    private static ReviewerStatus mapper(GHPullRequestReviewState state) {
+        if (state == null) {
+            throw new IllegalArgumentException("GHPullRequestReviewState is null");
+        }
+        return switch (state) {
+            case PENDING -> ReviewerStatus.PENDING;
+            case APPROVED -> ReviewerStatus.APPROVED;
+            case CHANGES_REQUESTED -> ReviewerStatus.CHANGES_REQUESTED;
+            case REQUEST_CHANGES -> ReviewerStatus.REQUEST_CHANGES;
+            case COMMENTED -> ReviewerStatus.COMMENTED;
+            case DISMISSED -> ReviewerStatus.DISMISSED;
+        };
     }
 }

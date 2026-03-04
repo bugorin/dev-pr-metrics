@@ -2,6 +2,7 @@ package com.devprmetrics.sync.mapper;
 
 import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.pr.PrStatus;
+import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHPullRequestReview;
 
@@ -16,10 +17,11 @@ public record PrEntityMapper() {
             if(pullRequest == null) {
                 throw new IllegalArgumentException("GHPullRequest is null");
             }
+
             Pr pr = new Pr(
                     pullRequest.getId(),
                     UserEntityMapper.mapper(pullRequest.getUser()),
-                    PrStatus.from(pullRequest.getState()),
+                    mapToStatus(pullRequest.getState()),
                     toLocalDateTime(pullRequest.getCreatedAt()),
                     toLocalDateTime(pullRequest.getUpdatedAt())
             );
@@ -33,5 +35,16 @@ public record PrEntityMapper() {
         }catch (Exception e) {
             throw new IllegalArgumentException("Could not map GHPullRequest pr to entity", e);
         }
+    }
+
+    private static PrStatus mapToStatus(GHIssueState state) {
+        if (state == null) {
+            throw new IllegalArgumentException("GHIssueState is null");
+        }
+        return switch (state) {
+            case OPEN -> PrStatus.OPEN;
+            case CLOSED -> PrStatus.CLOSED;
+            default -> throw new IllegalArgumentException("Unknown GHIssueState: " + state);
+        };
     }
 }

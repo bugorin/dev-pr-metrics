@@ -27,7 +27,7 @@ public class PrHandleService {
 
     @Transactional
     public Pr createOrMerge(GHPullRequest ghPullRequest) throws IOException {
-        Optional<Pr> byId = prRepository.findById(ghPullRequest.getNumber());
+        Optional<Pr> byId = prRepository.findById((long) ghPullRequest.getNumber());
 
         if (byId.isEmpty()) {
             return create(ghPullRequest);
