@@ -123,9 +123,6 @@ public class Pr {
     }
 
     public void addOrUpdate(User user, GHPullRequestReview reviewer) throws IOException {
-        ReviewerStatus status = ReviewerStatus.from(reviewer.getState());
-        LocalDateTime submittedAt = toLocalDateTime(reviewer.getSubmittedAt());
-
         Optional<Reviewer> existing = reviewers.stream()
                 .filter(r -> r.isUser(user))
                 .findFirst();
@@ -135,6 +132,6 @@ public class Pr {
             return;
         }
 
-        this.reviewers.add(new Reviewer(this, user, status, submittedAt));
+        this.reviewers.add(new Reviewer(this, user, reviewer));
     }
 }

@@ -14,9 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.kohsuke.github.GHPullRequestReview;
+import org.kohsuke.github.GHPullRequestReviewState;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
+
+import static com.devprmetrics.domain.review.ReviewerStatus.from;
+import static com.devprmetrics.util.LocalDateTimeUtils.toLocalDateTime;
 
 @Entity
 public class Reviewer {
@@ -42,6 +47,10 @@ public class Reviewer {
     private LocalDateTime submittedAt;
 
     protected Reviewer() {
+    }
+
+    public Reviewer(Pr pr, User user, GHPullRequestReview reviewer) throws IOException {
+        this(pr, user, from(reviewer.getState()), toLocalDateTime(reviewer.getSubmittedAt()));
     }
 
     public Reviewer(Pr pr, User user, ReviewerStatus status, LocalDateTime submittedAt) {
@@ -88,8 +97,8 @@ public class Reviewer {
     }
 
     public void merge(GHPullRequestReview reviewer) throws IOException {
-        this.status = ReviewerStatus.from(reviewer.getState());
-        this.submittedAt = LocalDateTimeUtils.toLocalDateTime(reviewer.getSubmittedAt());
+        this.status = from(reviewer.getState());
+        this.submittedAt = toLocalDateTime(reviewer.getSubmittedAt());
     }
 
     public boolean isUser(User user) {
