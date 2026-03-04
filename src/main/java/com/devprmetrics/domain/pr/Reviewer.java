@@ -1,6 +1,7 @@
 package com.devprmetrics.domain.pr;
 
 import com.devprmetrics.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,7 @@ public class Reviewer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_pr", nullable = false)
     private Pr pr;

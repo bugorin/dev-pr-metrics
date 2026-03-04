@@ -1,6 +1,7 @@
 package com.devprmetrics.domain.pr;
 
 import com.devprmetrics.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.kohsuke.github.*;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.devprmetrics.util.LocalDateTimeUtils.toLocalDateTime;
 
@@ -35,18 +37,19 @@ public class Pr {
     @Column(name = "infos", columnDefinition = "json")
     private String infos;
 
-    @OneToMany(mappedBy = "pr")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pr", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reviewer> reviewers = new ArrayList<>();
 
     protected Pr() {
     }
 
-    public Pr(int id, User author, PrStatus githubStatus,
+    public Pr(int id, User author, GHIssueState githubStatus,
                Date githubCreatedAt, Date githubUpdatedAt,
                String infos) {
         this.id = (long) id;
         this.author = author;
-        this.githubStatus = githubStatus;
+        this.githubStatus = PrStatus.from(githubStatus);
         this.githubCreatedAt = toLocalDateTime(githubCreatedAt);
         this.githubUpdatedAt = toLocalDateTime(githubUpdatedAt);
         this.infos = infos;
@@ -108,22 +111,28 @@ public class Pr {
         this.infos = infos;
     }
 
-    public Pr merge(GHPullRequest ghPullRequest) throws IOException {
+    public Pr merge(GHPullRequest ghPullRequest, Map<User, GHPullRequestReview> reviewByUser) throws IOException {
         this.setGithubStatus(ghPullRequest.getState());
         this.setGithubCreatedAt(ghPullRequest.getCreatedAt());
         this.setGithubUpdatedAt(ghPullRequest.getUpdatedAt());
+
+        for (Map.Entry<User, GHPullRequestReview> key : reviewByUser.entrySet()) {
+            this.addOrUpdate(key.getKey(), key.getValue());
+        }
+
         return this;
     }
 
-    public void addReviews(User user, GHPullRequestReview reviewer) throws IOException {
-        this.addReviews(
-                user,
-                ReviewerStatus.from(reviewer.getState()),
-                toLocalDateTime(reviewer.getSubmittedAt())
-        );
-    }
-
-    public void addReviews(User user, ReviewerStatus status, LocalDateTime submittedAt) {
+    public void addOrUpdate(User user, GHPullRequestReview reviewer) throws IOException {
+        ReviewerStatus status = ReviewerStatus.from(reviewer.getState());
+        LocalDateTime submittedAt = toLocalDateTime(reviewer.getSubmittedAt());
+        for (Reviewer existing : reviewers) {
+            if (existing.getUser().getId().equals(user.getId())) {
+                existing.setStatus(status);
+                existing.setSubmittedAt(submittedAt);
+                return;
+            }
+        }
         this.reviewers.add(new Reviewer(this, user, status, submittedAt));
     }
 }

@@ -31,7 +31,10 @@ public class PrHandleService {
         }
 
         Pr pr = byId.get();
-        prRepository.save(pr.merge(ghPullRequest));
+
+        Map<User, GHPullRequestReview> reviewByUser = mapToUser(ghPullRequest.listReviews().toList());
+        pr.merge(ghPullRequest, reviewByUser);
+        prRepository.save(pr);
         return pr;
     }
 
@@ -44,7 +47,7 @@ public class PrHandleService {
         Pr pr = new Pr(
                 ghPullRequest.getNumber(),
                 author,
-                PrStatus.from(ghPullRequest.getState()),
+                ghPullRequest.getState(),
                 ghPullRequest.getCreatedAt(),
                 ghPullRequest.getUpdatedAt(),
                 null
@@ -52,7 +55,7 @@ public class PrHandleService {
 
         Map<User, GHPullRequestReview> reviewByUser = mapToUser(ghReviews);
         for (Map.Entry<User, GHPullRequestReview> key : reviewByUser.entrySet()) {
-            pr.addReviews(key.getKey(), key.getValue());
+            pr.addOrUpdate(key.getKey(), key.getValue());
         }
 
         return prRepository.save(pr);
@@ -60,7 +63,7 @@ public class PrHandleService {
 
     private Map<User, GHPullRequestReview> mapToUser(List<GHPullRequestReview> ghReviews) throws IOException {
         Map<Long, User> usersById = mapToUserAndGroupById(ghReviews);
-        Map<User, GHPullRequestReview> result = new HashMap<>();
+        Map<User, GHPullRequestReview> result = new LinkedHashMap<>();
         for (GHPullRequestReview review : ghReviews) {
             GHUser ghUser = review.getUser();
             User user = usersById.get(ghUser.getId());
