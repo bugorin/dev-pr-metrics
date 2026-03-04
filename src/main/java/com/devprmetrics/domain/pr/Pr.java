@@ -1,11 +1,12 @@
 package com.devprmetrics.domain.pr;
 
 import com.devprmetrics.domain.review.Reviewer;
-import com.devprmetrics.domain.review.ReviewerStatus;
 import com.devprmetrics.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.kohsuke.github.*;
+import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.GHPullRequestReview;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
