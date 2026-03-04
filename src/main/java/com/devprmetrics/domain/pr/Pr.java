@@ -1,5 +1,6 @@
 package com.devprmetrics.domain.pr;
 
+import com.devprmetrics.domain.repo.Repo;
 import com.devprmetrics.domain.review.Reviewer;
 import com.devprmetrics.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -22,6 +23,10 @@ public class Pr {
     @JoinColumn(name = "github_author_id", nullable = false)
     private User author;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "github_repository_id", nullable = true)
+    private Repo repository;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "github_status", nullable = false, length = 20)
     private PrStatus githubStatus;
@@ -41,16 +46,18 @@ public class Pr {
 
     protected Pr() {}
 
-    public Pr(Long id, User author, PrStatus githubStatus,
+    public Pr(Long id, User author, Repo repository, PrStatus githubStatus,
                LocalDateTime githubCreatedAt, LocalDateTime githubUpdatedAt) {
         this.id = id;
         this.author = author;
+        this.repository = repository;
         this.githubStatus = githubStatus;
         this.githubCreatedAt = githubCreatedAt;
         this.githubUpdatedAt = githubUpdatedAt;
     }
 
     public Pr merge(Pr pr) {
+        this.setRepository(pr.getRepository());
         this.setGithubStatus(pr.getGithubStatus());
         this.setGithubCreatedAt(pr.getGithubCreatedAt());
         this.setGithubUpdatedAt(pr.getGithubUpdatedAt());
