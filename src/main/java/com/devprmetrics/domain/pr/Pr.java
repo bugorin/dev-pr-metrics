@@ -1,16 +1,15 @@
 package com.devprmetrics.domain.pr;
 
 import com.devprmetrics.domain.user.User;
-import com.devprmetrics.domain.user.UserCreateService;
 import jakarta.persistence.*;
-import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import static com.devprmetrics.domain.pr.PrStatus.from;
 import static com.devprmetrics.util.LocalDateTimeUtils.toLocalDateTime;
 
 @Entity
@@ -36,30 +35,20 @@ public class Pr {
     @Column(name = "infos", columnDefinition = "json")
     private String infos;
 
+    @OneToMany(mappedBy = "pr")
+    private List<Reviewer> reviewers = new ArrayList<>();
+
     protected Pr() {
     }
 
-    public static Pr createFrom(GHPullRequest ghPullRequest, UserCreateService userCreateService) throws IOException {
-        User author = userCreateService.findOrCreated(ghPullRequest.getUser())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        return new Pr(
-                (long) ghPullRequest.getNumber(),
-                author,
-                PrStatus.from(ghPullRequest.getState()),
-                toLocalDateTime(ghPullRequest.getCreatedAt()),
-                toLocalDateTime(ghPullRequest.getUpdatedAt()),
-                null
-        );
-    }
-
-    private Pr(Long id, User author, PrStatus githubStatus,
-              LocalDateTime githubCreatedAt, LocalDateTime githubUpdatedAt, String infos) {
-        this.id = id;
+    public Pr(int id, User author, PrStatus githubStatus,
+               Date githubCreatedAt, Date githubUpdatedAt,
+               String infos) {
+        this.id = (long) id;
         this.author = author;
         this.githubStatus = githubStatus;
-        this.githubCreatedAt = githubCreatedAt;
-        this.githubUpdatedAt = githubUpdatedAt;
+        this.githubCreatedAt = toLocalDateTime(githubCreatedAt);
+        this.githubUpdatedAt = toLocalDateTime(githubUpdatedAt);
         this.infos = infos;
     }
 
@@ -80,7 +69,7 @@ public class Pr {
     }
 
     public void setGithubStatus(GHIssueState githubStatus) {
-        this.githubStatus = from(githubStatus);
+        this.githubStatus = PrStatus.from(githubStatus);
     }
 
     public LocalDateTime getGithubCreatedAt() {
@@ -107,6 +96,10 @@ public class Pr {
         this.setGithubUpdatedAt(toLocalDateTime(githubUpdatedAt));
     }
 
+    public List<Reviewer> getReviewers() {
+        return reviewers;
+    }
+
     public String getInfos() {
         return infos;
     }
@@ -120,5 +113,17 @@ public class Pr {
         this.setGithubCreatedAt(ghPullRequest.getCreatedAt());
         this.setGithubUpdatedAt(ghPullRequest.getUpdatedAt());
         return this;
+    }
+
+    public void addReviews(User user, GHPullRequestReview reviewer) throws IOException {
+        this.addReviews(
+                user,
+                ReviewerStatus.from(reviewer.getState()),
+                toLocalDateTime(reviewer.getSubmittedAt())
+        );
+    }
+
+    public void addReviews(User user, ReviewerStatus status, LocalDateTime submittedAt) {
+        this.reviewers.add(new Reviewer(this, user, status, submittedAt));
     }
 }

@@ -42,6 +42,8 @@ public class RepositoryController {
             List<GHPullRequestReview> reviews = new ArrayList<>();
 
             for (GHPullRequestReview review : pull.listReviews()) {
+                System.out.println(review);
+
                 reviews.add(review);
             }
             int additions = pull.getAdditions();
