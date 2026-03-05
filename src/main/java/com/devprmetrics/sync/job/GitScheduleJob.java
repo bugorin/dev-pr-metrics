@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class JobRunrTestJob {
+public class GitScheduleJob {
 
     @Job(name = "Sync PR id=%0")
     public void execute(Long prId) {

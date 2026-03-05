@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class GitHubPrSearchTestService {
+public class PrQuerySearchService {
 
     private final Envie envie;
     private final GitHub gitHub;
@@ -47,11 +47,12 @@ public class GitHubPrSearchTestService {
         return results;
     }
 
-    public record PrSearchItem(Long id, LocalDateTime updatedAt) {
+    public record PrSearchItem(Long id, Integer number, LocalDateTime updatedAt) {
 
         public PrSearchItem(GHIssue issue) throws IOException {
             this(
                     issue.getId(),
+                    issue.getNumber(),
                     LocalDateTimeUtils.toLocalDateTime(issue.getUpdatedAt()));
         }
 

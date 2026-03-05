@@ -2,5 +2,9 @@ package com.devprmetrics.domain.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface RepoRepository extends JpaRepository<Repo, Long> {
+
+    Optional<Repo> findAllByNameContainingIgnoreCase(String name);
 }

@@ -3,29 +3,35 @@ package com.devprmetrics.sync.service;
 import com.devprmetrics.domain.repo.Repo;
 import com.devprmetrics.domain.repo.RepoRepository;
 import com.devprmetrics.sync.mapper.RepoEntityMapper;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.kohsuke.github.GHRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
+@AllArgsConstructor
 public class RepoHandleService {
 
     private final RepoRepository repoRepository;
 
-    public RepoHandleService(RepoRepository repoRepository) {
-        this.repoRepository = repoRepository;
-    }
-
     @Transactional
-    public Repo createOrMerge(GHRepository ghRepository) {
+    public void createOrMerge(GHRepository ghRepository) {
         Optional<Repo> existing = repoRepository.findById(ghRepository.getId());
         if (existing.isEmpty()) {
-            return create(ghRepository);
+            create(ghRepository);
+            return;
         }
 
         Repo merged = existing.get().merge(RepoEntityMapper.mapper(ghRepository));
-        return repoRepository.save(merged);
+        repoRepository.save(merged);
+    }
+
+    @Transactional
+    public Repo findOrCreate(GHRepository ghRepository) {
+        Optional<Repo> existing = repoRepository.findById(ghRepository.getId());
+        return existing.orElseGet(() -> create(ghRepository));
     }
 
     private Repo create(GHRepository ghRepository) {

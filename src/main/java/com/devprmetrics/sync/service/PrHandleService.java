@@ -26,24 +26,24 @@ public class PrHandleService {
     }
 
     @Transactional
-    public Pr createOrMerge(Repo repo, GHPullRequest ghPullRequest) {
+    public void createOrMerge(Repo repo, GHPullRequest ghPullRequest) {
         Optional<Pr> byId = prRepository.findById((long) ghPullRequest.getNumber());
 
         if (byId.isEmpty()) {
-            return create(repo, ghPullRequest);
+            create(repo, ghPullRequest);
+            return;
         }
 
         Pr pr = byId.get();
         pr.merge(PrEntityMapper.mapper(repo, ghPullRequest));
         prRepository.save(pr);
-        return pr;
     }
 
-    private Pr create(Repo repository, GHPullRequest ghPullRequest) {
+    private void create(Repo repository, GHPullRequest ghPullRequest) {
         Pr pr = PrEntityMapper.mapper(repository, ghPullRequest);
         userCreateService.findOrCreated(pr.getAuthor());
         List<User> reviewrs = pr.getReviewers().stream().map(Reviewer::getUser).toList();
         userCreateService.findOrCreated(reviewrs);
-        return prRepository.save(pr);
+        prRepository.save(pr);
     }
 }

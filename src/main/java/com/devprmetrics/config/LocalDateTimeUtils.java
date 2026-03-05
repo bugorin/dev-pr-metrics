@@ -12,6 +12,7 @@ public final class LocalDateTimeUtils {
     }
 
     public static LocalDateTime toLocalDateTime(Date date) {
+        if (date == null) return null;
         return date
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -19,6 +20,7 @@ public final class LocalDateTimeUtils {
     }
 
     public static String toIsoInstantUtc(LocalDateTime localDateTime) {
+        if (localDateTime == null) return null;
         return DateTimeFormatter.ISO_INSTANT.format(localDateTime.toInstant(ZoneOffset.UTC));
     }
 
