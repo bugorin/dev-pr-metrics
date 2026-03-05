@@ -4,11 +4,7 @@ import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.pr.PrStatus;
 import com.devprmetrics.domain.repo.Repo;
 import java.util.List;
-import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHLabel;
-import org.kohsuke.github.GHPullRequest;
-import org.kohsuke.github.GHPullRequestReview;
-import org.kohsuke.github.GHUser;
+import org.kohsuke.github.*;
 
 import static com.devprmetrics.config.LocalDateTimeUtils.toLocalDateTime;
 

@@ -4,16 +4,12 @@ import com.devprmetrics.config.Envie;
 import com.devprmetrics.domain.repo.Repo;
 import com.devprmetrics.sync.service.PrHandleService;
 import com.devprmetrics.sync.service.RepoHandleService;
-import lombok.AllArgsConstructor;
-import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPullRequest;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import org.kohsuke.github.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

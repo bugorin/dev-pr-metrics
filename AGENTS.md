@@ -18,3 +18,8 @@ Regras:
 Regras:
 - Preferir Bean Validation (`jakarta.validation`) com anotacoes nos DTOs (`@NotBlank`, `@NotNull`, etc.) e `@Valid` nos endpoints.
 - Nao fazer validacao manual com `if` para campos obrigatorios em controllers/APIs quando Bean Validation atender o caso.
+
+## Imports (obrigatorio)
+
+Regras:
+- Se houver 3 ou mais imports do mesmo pacote, usar import com wildcard (`*`) para esse pacote.
