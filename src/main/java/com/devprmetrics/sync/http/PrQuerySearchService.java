@@ -2,14 +2,17 @@ package com.devprmetrics.sync.http;
 
 import com.devprmetrics.config.Envie;
 import com.devprmetrics.config.LocalDateTimeUtils;
+import com.devprmetrics.domain.sync.*;
+import lombok.AllArgsConstructor;
+import org.kohsuke.github.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import org.kohsuke.github.*;
-import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
@@ -17,26 +20,37 @@ public class PrQuerySearchService {
 
     private final Envie envie;
     private final GitHub gitHub;
+    private final SyncLogService syncLogService;
+    private final SyncLogRepository syncLogRepository;
 
-    public List<PrSearchItem> searchUpdatedPullRequests(String repository, LocalDateTime updatedSince) throws IOException {
-        LocalDateTime updatedSinceUtc = LocalDateTimeUtils.toUtc(updatedSince, ZoneId.systemDefault());
-        return searchUpdatedPullRequestsUTC(repository, updatedSinceUtc);
+    @Transactional
+    public List<PrSearchItem> searchUpdatedPullRequests() throws IOException {
+        SyncLog prSearch = syncLogService.findOrCreate(SyncLogOption.PR_QUERY);
+        LocalDateTime updatedSinceUtc = LocalDateTimeUtils.toUtc(prSearch.getLastSync(), ZoneId.systemDefault());
+        LocalDateTime maxUpdatedAtUtc = LocalDateTimeUtils.toUtc(prSearch.nextTimeToTry(), ZoneId.systemDefault());
+        List<PrSearchItem> prSearchItems = searchUpdatedPullRequestsUTC(updatedSinceUtc, maxUpdatedAtUtc);
+        prSearch.setLastSync(maxUpdatedAtUtc);
+        syncLogRepository.save(prSearch);
+        return prSearchItems;
     }
 
-    public List<PrSearchItem> searchUpdatedPullRequestsUTC(String repository, LocalDateTime updatedSinceUtc) throws IOException {
-        String query = buildQuery(repository, updatedSinceUtc);
+    private List<PrSearchItem> searchUpdatedPullRequestsUTC(
+            LocalDateTime updatedSinceUtc,
+            LocalDateTime maxUpdatedAtUtc) throws IOException {
+
+        String query = buildQuery(updatedSinceUtc, maxUpdatedAtUtc);
         PagedSearchIterable<GHIssue> listed = gitHub.searchIssues().q(query).list();
         return toPrSearchItem(listed);
     }
 
-    private String buildQuery(String repository, LocalDateTime updatedSinceUtc) {
+    private String buildQuery(LocalDateTime updatedSinceUtc, LocalDateTime maxUpdatedAtUtc) {
         return String.format(
                 """
-                org:%s repo:%s is:pr updated:>=%s
+                org:%s is:pr updated:%s..%s
                 """,
                 envie.getOrganization(),
-                repository,
-                LocalDateTimeUtils.toIsoInstantUtc(updatedSinceUtc)).trim();
+                LocalDateTimeUtils.toIsoInstantUtc(updatedSinceUtc),
+                LocalDateTimeUtils.toIsoInstantUtc(maxUpdatedAtUtc)).trim();
     }
 
     private List<PrSearchItem> toPrSearchItem(PagedSearchIterable<GHIssue> issues) throws IOException {
@@ -47,10 +61,11 @@ public class PrQuerySearchService {
         return results;
     }
 
-    public record PrSearchItem(Long id, Integer number, LocalDateTime updatedAt) {
+    public record PrSearchItem(String repo, Long id, Integer number, LocalDateTime updatedAt) {
 
         public PrSearchItem(GHIssue issue) throws IOException {
             this(
+                    issue.getRepository().getName(),
                     issue.getId(),
                     issue.getNumber(),
                     LocalDateTimeUtils.toLocalDateTime(issue.getUpdatedAt()));
