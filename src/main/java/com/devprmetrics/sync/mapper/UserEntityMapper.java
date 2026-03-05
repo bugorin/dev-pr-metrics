@@ -14,7 +14,7 @@ public record UserEntityMapper() {
             }
 
             return new User(
-                    1L,
+                    ghUser.getId(),
                     filterString(ghUser.getName()).orElse("github-user-" + ghUser.getId())
             );
         }catch (Exception e) {
