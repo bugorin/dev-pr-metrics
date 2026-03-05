@@ -8,6 +8,8 @@ import java.util.Date;
 
 public final class LocalDateTimeUtils {
 
+    private static final ZoneId SAO_PAULO_ZONE_ID = ZoneId.of("America/Sao_Paulo");
+
     private LocalDateTimeUtils() {
     }
 
@@ -15,7 +17,7 @@ public final class LocalDateTimeUtils {
         if (date == null) return null;
         return date
                 .toInstant()
-                .atZone(ZoneId.systemDefault())
+                .atZone(SAO_PAULO_ZONE_ID)
                 .toLocalDateTime();
     }
 
