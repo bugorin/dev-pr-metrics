@@ -4,6 +4,7 @@ CREATE TABLE `Reviewer` (
     github_user_id BIGINT NOT NULL,
     status ENUM('PENDING', 'APPROVED', 'CHANGES_REQUESTED', 'REQUEST_CHANGES', 'COMMENTED', 'DISMISSED') NOT NULL,
     submitted_at DATETIME(6) NOT NULL,
+    infos JSON NULL,
     PRIMARY KEY (id),
     KEY idx_reviewer_id_pr (id_pr),
     KEY idx_reviewer_github_user_id (github_user_id),

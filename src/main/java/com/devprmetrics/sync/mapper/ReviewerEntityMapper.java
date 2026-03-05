@@ -17,12 +17,13 @@ public record ReviewerEntityMapper() {
             }
 
             return new Reviewer(
-                   pr,
+                    pr,
                     UserEntityMapper.mapper(ghReview.getUser()),
                     mapper(ghReview.getState()),
-                    toLocalDateTime(ghReview.getSubmittedAt())
+                    toLocalDateTime(ghReview.getSubmittedAt()),
+                    ghReview.getBody()
             );
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Could not map ghReview to reviewer entity", e);
         }
     }
