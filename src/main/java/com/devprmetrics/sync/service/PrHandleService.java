@@ -27,7 +27,7 @@ public class PrHandleService {
 
     @Transactional
     public void createOrMerge(Repo repo, GHPullRequest ghPullRequest) {
-        Optional<Pr> byId = prRepository.findById((long) ghPullRequest.getNumber());
+        Optional<Pr> byId = prRepository.findByGithubId(ghPullRequest.getId());
 
         if (byId.isEmpty()) {
             create(repo, ghPullRequest);

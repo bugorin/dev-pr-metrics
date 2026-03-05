@@ -19,7 +19,14 @@ import org.hibernate.type.SqlTypes;
 public class Pr {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "github_id", nullable = false, unique = true)
+    private Long githubId;
+
+    @Column(name = "github_number", nullable = false)
+    private Integer githubNumber;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "github_author_id", nullable = false)
@@ -66,7 +73,7 @@ public class Pr {
     protected Pr() {
     }
 
-    public Pr(Long id, User author, Repo repository, PrStatus githubStatus,
+    public Pr(Long githubId, Integer githubNumber, User author, Repo repository, PrStatus githubStatus,
               String githubTitle, boolean githubDraft, boolean githubMerged,
               LocalDateTime githubMergedAt, LocalDateTime githubClosedAt,
               String githubHtmlUrl, int githubAdditions, int githubDeletions,
@@ -75,7 +82,8 @@ public class Pr {
               String githubBaseRef, String githubHeadRef,
               List<String> githubLabels, List<Long> githubRequestedReviewers,
               LocalDateTime githubCreatedAt, LocalDateTime githubUpdatedAt) {
-        this.id = id;
+        this.githubId = githubId;
+        this.githubNumber = githubNumber;
         this.author = author;
         this.repository = repository;
         this.githubStatus = githubStatus;
@@ -102,6 +110,8 @@ public class Pr {
     }
 
     public Pr merge(Pr pr) {
+        this.setGithubId(pr.getGithubId());
+        this.setGithubNumber(pr.getGithubNumber());
         this.setRepository(pr.getRepository());
         this.setGithubStatus(pr.getGithubStatus());
         this.setGithubTitle(pr.getGithubTitle());

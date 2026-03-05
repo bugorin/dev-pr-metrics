@@ -27,6 +27,7 @@ public record PrEntityMapper() {
             List<GHPullRequestReview> ghReviews = pullRequest.listReviews().toList();
             Pr pr = new Pr(
                     pullRequest.getId(),
+                    pullRequest.getNumber(),
                     UserEntityMapper.mapper(pullRequest.getUser()),
                     repository,
                     mapToStatus(pullRequest.getState()),

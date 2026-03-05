@@ -1,5 +1,7 @@
 CREATE TABLE `Pr` (
-    id BIGINT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    github_id BIGINT NOT NULL,
+    github_number INT NOT NULL,
     github_author_id BIGINT NOT NULL,
     github_repository_id BIGINT NOT NULL,
     github_status ENUM('OPEN','CLOSED') NOT NULL,
@@ -12,6 +14,9 @@ CREATE TABLE `Pr` (
     github_updated_at DATETIME(6) NOT NULL,
     infos JSON NULL,
     PRIMARY KEY (id),
+    UNIQUE KEY uk_pr_github_id (github_id),
+    UNIQUE KEY uk_pr_repo_number (github_repository_id, github_number),
+    KEY idx_pr_github_number (github_number),
     KEY idx_pr_github_repository_id (github_repository_id),
     CONSTRAINT fk_pr_user_author FOREIGN KEY (github_author_id) REFERENCES `User` (id),
     CONSTRAINT fk_pr_github_repository FOREIGN KEY (github_repository_id) REFERENCES `Repo` (id)
