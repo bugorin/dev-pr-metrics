@@ -15,7 +15,8 @@ public record UserEntityMapper() {
 
             return new User(
                     ghUser.getId(),
-                    filterString(ghUser.getName()).orElse("github-user-" + ghUser.getId())
+                    filterString(ghUser.getName()).orElse("github-user-" + ghUser.getId()),
+                    filterString(ghUser.getLogin()).orElse("user-" + ghUser.getId())
             );
         }catch (Exception e) {
             throw new IllegalArgumentException("Could not map GHUser to user entity", e);
