@@ -196,6 +196,7 @@ public class Pr {
             return;
         }
 
+        reviewer.setPr(this);
         this.reviewers.add(reviewer);
     }
 
