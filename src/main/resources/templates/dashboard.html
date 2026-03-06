@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Dashboard')"></head>
+<body th:replace="~{layout :: layout('Dashboard', ~{::section})}">
+<section class="page">
+    <div class="page__header">
+        <div>
+            <p class="eyebrow">Visão geral</p>
+            <h1>Dashboard</h1>
+            <p class="subtitle">Acompanhe rapidamente o fluxo de PRs e a saúde do ciclo de reviews.</p>
+        </div>
+    </div>
+    <div class="cards-grid">
+        <article class="card metric-card">
+            <header>
+                <p class="label">PRs abertos</p>
+                <span class="pill pill--info">ao vivo</span>
+            </header>
+            <div class="metric">
+                <span class="metric__value">42</span>
+                <span class="metric__delta positive">+6 vs ontem</span>
+            </div>
+            <p class="metric__hint">Inclui PRs aguardando aprovação e revisão.</p>
+        </article>
+        <article class="card metric-card">
+            <header>
+                <p class="label">PRs mergeados hoje</p>
+                <span class="pill pill--success">últimas 24h</span>
+            </header>
+            <div class="metric">
+                <span class="metric__value">18</span>
+                <span class="metric__delta neutral">= média</span>
+            </div>
+            <p class="metric__hint">Automations inclusas.</p>
+        </article>
+        <article class="card metric-card">
+            <header>
+                <p class="label">Tempo médio de review</p>
+                <span class="pill pill--warning">SLA 24h</span>
+            </header>
+            <div class="metric">
+                <span class="metric__value">7h 45m</span>
+                <span class="metric__delta positive">-1h vs semana passada</span>
+            </div>
+            <p class="metric__hint">Do primeiro comentário até aprovação final.</p>
+        </article>
+        <article class="card metric-card">
+            <header>
+                <p class="label">PRs aguardando review</p>
+                <span class="pill pill--info">fila</span>
+            </header>
+            <div class="metric">
+                <span class="metric__value">9</span>
+                <span class="metric__delta negative">+3 vs ontem</span>
+            </div>
+            <p class="metric__hint">Priorizar os com tempo em fila &gt; 12h.</p>
+        </article>
+    </div>
+    <section class="panel">
+        <header class="panel__header">
+            <div>
+                <p class="eyebrow">Fluxo recente</p>
+                <h2>Últimos PRs</h2>
+            </div>
+            <a class="link" th:href="@{/pull-requests}">Ver todos</a>
+        </header>
+        <div class="table">
+            <div class="table__head">
+                <span>ID</span>
+                <span>Título</span>
+                <span>Autor</span>
+                <span>Status</span>
+                <span>Tempo de review</span>
+            </div>
+            <div class="table__row">
+                <span>#1821</span>
+                <span>Refatorar service de sync</span>
+                <span>ana.henriques</span>
+                <span class="badge badge--success">Mergeado</span>
+                <span>5h 12m</span>
+            </div>
+            <div class="table__row">
+                <span>#1819</span>
+                <span>Ajustar validação de payload</span>
+                <span>luiz.silva</span>
+                <span class="badge badge--warning">Em revisão</span>
+                <span>12h 05m</span>
+            </div>
+            <div class="table__row">
+                <span>#1815</span>
+                <span>Melhorar observabilidade de jobs</span>
+                <span>rita.monteiro</span>
+                <span class="badge badge--info">Aguardando review</span>
+                <span>18h 44m</span>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+</html>

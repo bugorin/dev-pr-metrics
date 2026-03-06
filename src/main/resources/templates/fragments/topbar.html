@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="topbar" class="topbar">
+    <div class="topbar__left">
+        <span class="topbar__breadcrumbs">Home</span>
+    </div>
+    <div class="topbar__right">
+        <div class="user-menu" id="userMenu">
+            <button class="user-menu__trigger" id="userMenuButton" aria-label="Menu do usuário">
+                <img src="https://avatars.githubusercontent.com/u/9919?s=64&v=4" alt="Avatar" class="user-menu__avatar" />
+            </button>
+            <div class="user-menu__dropdown" id="userMenuDropdown">
+                <button class="user-menu__item" id="themeToggle">Mudar tema</button>
+                <a class="user-menu__item" href="#">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>

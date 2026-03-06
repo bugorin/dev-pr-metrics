@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(${pageTitle})"></head>
+<body class="layout" id="body" th:fragment="layout(pageTitle, bodyContent)">
+<div class="app">
+    <aside th:replace="~{fragments/sidebar :: sidebar(${page})}"></aside>
+    <div class="content-wrapper">
+        <header th:replace="~{fragments/topbar :: topbar}"></header>
+        <main class="content" id="content" th:insert="${bodyContent}"></main>
+    </div>
+</div>
+<footer th:replace="~{fragments/scripts :: scripts}"></footer>
+</body>
+</html>

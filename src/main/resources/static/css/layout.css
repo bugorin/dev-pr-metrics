@@ -1,0 +1,124 @@
+:root {
+    --sidebar-width: 260px;
+    --sidebar-width-collapsed: 88px;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    min-height: 100vh;
+    background: var(--surface-0);
+}
+
+.sidebar.collapsed + .content-wrapper .content { padding-left: 0; }
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    padding: 32px 36px 48px;
+    background: var(--surface-0);
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.page__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.actions { display: flex; gap: 12px; align-items: center; }
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.cards-list { display: flex; flex-direction: column; gap: 12px; }
+
+.card {
+    background: var(--surface-1);
+    border: 1px solid var(--border-1);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.2s ease, transform 0.1s ease;
+}
+
+.card:hover { border-color: var(--border-2); }
+
+.metric-card .metric {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.metric__value { font-size: 32px; font-weight: 700; }
+
+.metric__delta { font-weight: 600; font-size: 14px; }
+
+.metric__delta.positive { color: var(--accent-3); }
+.metric__delta.negative { color: var(--accent-4); }
+.metric__delta.neutral { color: var(--text-2); }
+
+.metric__hint { color: var(--text-2); font-size: 13px; }
+
+.panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border-1);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table {
+    display: grid;
+    gap: 8px;
+}
+
+.table__head, .table__row {
+    display: grid;
+    grid-template-columns: 120px 1fr 160px 160px 160px;
+    align-items: center;
+    gap: 12px;
+}
+
+.table__head { font-weight: 600; color: var(--text-2); }
+
+.table__row {
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-1);
+}
+
+.table--cards .table__row { background: var(--surface-1); }
+
+.repo-card__stats { color: var(--text-2); margin-top: 8px; }
+
+@media (max-width: 960px) {
+    .app { grid-template-columns: var(--sidebar-width-collapsed) 1fr; }
+    .page__header { flex-direction: column; align-items: flex-start; }
+    .actions { width: 100%; flex-wrap: wrap; }
+    .table__head, .table__row { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+}

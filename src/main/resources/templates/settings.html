@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Configurações')"></head>
+<body th:replace="~{layout :: layout('Configurações', ~{::section})}">
+<section class="page">
+    <div class="page__header">
+        <div>
+            <p class="eyebrow">Preferências</p>
+            <h1>Configurações</h1>
+            <p class="subtitle">Ajuste padrões de tema, notificações e integrações.</p>
+        </div>
+    </div>
+    <div class="panel">
+        <header class="panel__header">
+            <h2>Tema</h2>
+            <button class="btn" id="settingsThemeToggle">Alternar</button>
+        </header>
+        <p class="small">Use o botão para alternar entre modos claro e escuro.</p>
+    </div>
+    <div class="panel">
+        <header class="panel__header">
+            <h2>Notificações</h2>
+        </header>
+        <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="toggle__track"></span>
+            <span class="toggle__label">Alertas de PR aguardando review &gt; 12h</span>
+        </label>
+    </div>
+</section>
+</body>
+</html>

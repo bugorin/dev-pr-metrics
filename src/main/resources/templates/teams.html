@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Times')"></head>
+<body th:replace="~{layout :: layout('Times', ~{::section})}">
+<section class="page">
+    <div class="page__header">
+        <div>
+            <p class="eyebrow">Organização</p>
+            <h1>Times</h1>
+            <p class="subtitle">Visão das squads e seus indicadores principais.</p>
+        </div>
+        <div class="actions">
+            <button class="btn btn--primary">Novo time</button>
+        </div>
+    </div>
+    <div class="table table--cards">
+        <div class="table__head">
+            <span>Time</span>
+            <span>Repos</span>
+            <span>PRs semana</span>
+            <span>Tempo médio</span>
+            <span>Fila &gt; 12h</span>
+        </div>
+        <div class="table__row">
+            <span>Core Services</span>
+            <span>7</span>
+            <span>112</span>
+            <span>8h 10m</span>
+            <span class="badge badge--warning">3</span>
+        </div>
+        <div class="table__row">
+            <span>Developer Experience</span>
+            <span>4</span>
+            <span>64</span>
+            <span>6h 32m</span>
+            <span class="badge badge--success">0</span>
+        </div>
+    </div>
+</section>
+</body>
+</html>

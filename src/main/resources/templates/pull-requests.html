@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Pull Requests')"></head>
+<body th:replace="~{layout :: layout('Pull Requests', ~{::section})}">
+<section class="page">
+    <div class="page__header">
+        <div>
+            <p class="eyebrow">Pipeline</p>
+            <h1>Pull Requests</h1>
+            <p class="subtitle">Filtre e monitore o ciclo de vida dos PRs.</p>
+        </div>
+        <div class="actions">
+            <input class="input" type="search" placeholder="Buscar PR por título ou ID" />
+            <button class="btn btn--primary">Criar filtro</button>
+        </div>
+    </div>
+    <div class="table table--cards">
+        <div class="table__head">
+            <span>ID</span>
+            <span>Título</span>
+            <span>Autor</span>
+            <span>Status</span>
+            <span>Atualizado</span>
+        </div>
+        <div class="table__row">
+            <span>#1824</span>
+            <span>Suporte a tema dinâmico</span>
+            <span>marco.pereira</span>
+            <span class="badge badge--warning">Em revisão</span>
+            <span>há 2h</span>
+        </div>
+        <div class="table__row">
+            <span>#1823</span>
+            <span>Corrigir webhooks de sync</span>
+            <span>aline.rocha</span>
+            <span class="badge badge--info">Aguardando review</span>
+            <span>há 5h</span>
+        </div>
+    </div>
+</section>
+</body>
+</html>
