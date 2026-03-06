@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SyncLogOption {
-    PR_QUERY(7,12, 30);
+    PR_QUERY(1,12, 30);
 
     private final int startDaysAgo;
     private final int timeToTryHours;

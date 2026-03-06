@@ -2,7 +2,6 @@ package com.devprmetrics.sync.http;
 
 import com.devprmetrics.config.Envie;
 import com.devprmetrics.config.LocalDateTimeUtils;
-import com.devprmetrics.domain.sync.*;
 import lombok.AllArgsConstructor;
 import org.kohsuke.github.*;
 import org.springframework.stereotype.Service;
@@ -20,18 +19,12 @@ public class PrQuerySearchService {
 
     private final Envie envie;
     private final GitHub gitHub;
-    private final SyncLogService syncLogService;
-    private final SyncLogRepository syncLogRepository;
 
     @Transactional
-    public List<PrSearchItem> searchUpdatedPullRequests() throws IOException {
-        SyncLog prSearch = syncLogService.findOrCreate(SyncLogOption.PR_QUERY);
-        LocalDateTime updatedSinceUtc = LocalDateTimeUtils.toUtc(prSearch.getLastSync(), ZoneId.systemDefault());
-        LocalDateTime maxUpdatedAtUtc = LocalDateTimeUtils.toUtc(prSearch.nextTimeToTry(), ZoneId.systemDefault());
-        List<PrSearchItem> prSearchItems = searchUpdatedPullRequestsUTC(updatedSinceUtc, maxUpdatedAtUtc);
-        prSearch.setLastSync(maxUpdatedAtUtc);
-        syncLogRepository.save(prSearch);
-        return prSearchItems;
+    public List<PrSearchItem> searchUpdatedPullRequests(LocalDateTime start, LocalDateTime end) throws IOException {
+        LocalDateTime updatedSinceUtc = LocalDateTimeUtils.toUtc(start, ZoneId.systemDefault());
+        LocalDateTime maxUpdatedAtUtc = LocalDateTimeUtils.toUtc(end, ZoneId.systemDefault());
+        return searchUpdatedPullRequestsUTC(updatedSinceUtc, maxUpdatedAtUtc);
     }
 
     private List<PrSearchItem> searchUpdatedPullRequestsUTC(

@@ -25,7 +25,7 @@ public class GitScheduleJob {
     private final JobScheduler jobScheduler;
     private final PrEnqueueJob prEnqueueJob;
 
-    @Recurring(id = "sync-pr-weekday-2min", cron = "*/1 8-23 * * 1-5")
+    @Recurring(id = "sync-pr-weekday-2min", cron = "*/2 8-22 * * 1-5")
     public void scheduleWeekday() {
         execute();
     }
