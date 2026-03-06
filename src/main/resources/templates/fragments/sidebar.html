@@ -1,32 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<body>
-<nav th:fragment="sidebar(activePage)" class="sidebar" id="sidebar">
+<nav th:fragment="sidebar(activePage)" class="sidebar" id="sidebar" xmlns:th="http://www.thymeleaf.org">
     <div class="sidebar__brand">
         <span class="sidebar__logo">DP</span>
         <span class="sidebar__title">DevPR Metrics</span>
-        <button class="sidebar__toggle" id="sidebarToggle" aria-label="Alternar menu">&#9776;</button>
+        <button class="sidebar__toggle" id="sidebarToggle" aria-label="Alternar menu"><span data-feather="menu"></span></button>
     </div>
     <ul class="sidebar__menu">
         <li th:classappend="${activePage} == 'dashboard' ? 'active'">
-            <a th:href="@{/dashboard}"><span class="icon">📊</span><span class="label">Dashboard</span></a>
+            <a th:href="@{/dashboard}"><span class="icon" data-feather="bar-chart-2"></span><span class="label">Dashboard</span></a>
         </li>
         <li th:classappend="${activePage} == 'pull-requests' ? 'active'">
-            <a th:href="@{/pull-requests}"><span class="icon">🔀</span><span class="label">Pull Requests</span></a>
+            <a th:href="@{/pull-requests}"><span class="icon" data-feather="git-pull-request"></span><span class="label">Pull Requests</span></a>
         </li>
         <li th:classappend="${activePage} == 'repositories' ? 'active'">
-            <a th:href="@{/repositories}"><span class="icon">📁</span><span class="label">Repositórios</span></a>
+            <a th:href="@{/repositories}"><span class="icon" data-feather="folder"></span><span class="label">Repositórios</span></a>
         </li>
         <li th:classappend="${activePage} == 'teams' ? 'active'">
-            <a th:href="@{/teams}"><span class="icon">👥</span><span class="label">Times</span></a>
+            <a th:href="@{/teams}"><span class="icon" data-feather="users"></span><span class="label">Times</span></a>
         </li>
         <li th:classappend="${activePage} == 'metrics' ? 'active'">
-            <a th:href="@{/metrics}"><span class="icon">📈</span><span class="label">Métricas</span></a>
+            <a th:href="@{/metrics}"><span class="icon" data-feather="trending-up"></span><span class="label">Métricas</span></a>
         </li>
         <li th:classappend="${activePage} == 'settings' ? 'active'">
-            <a th:href="@{/settings}"><span class="icon">⚙️</span><span class="label">Configurações</span></a>
+            <a th:href="@{/settings}"><span class="icon" data-feather="settings"></span><span class="label">Configurações</span></a>
         </li>
     </ul>
 </nav>
-</body>
-</html>
