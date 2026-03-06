@@ -9,6 +9,9 @@
     min-height: 100vh;
     background: var(--surface-0);
 }
+.app.sidebar-collapsed {
+    grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+}
 
 .sidebar.collapsed + .content-wrapper .content { padding-left: 0; }
 
