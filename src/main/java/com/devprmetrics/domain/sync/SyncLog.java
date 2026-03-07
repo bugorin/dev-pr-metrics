@@ -37,7 +37,7 @@ public class SyncLog {
     }
 
     public LocalDateTime nextTimeToTry() {
-        LocalDateTime next = this.lastSuccess.plusMinutes(this.type.getTimeToTryMinutes());
+        LocalDateTime next = this.lastSync.plusMinutes(this.type.getTimeToTryMinutes());
         LocalDateTime now = LocalDateTime.now();
         if (next.isAfter(now)) {
             return now.minusSeconds(this.type.getDelaySeconds());
