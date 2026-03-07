@@ -10,40 +10,40 @@
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{'dark bg-gray-900': darkMode === true}"
   >
-    <th:block th:replace="~{partials/preloader :: *}"></th:block>
+    <th:block th:replace="~{partials/preloader}"></th:block>
 
     <div class="flex h-screen overflow-hidden">
-      <th:block th:replace="~{partials/sidebar :: *}"></th:block>
+      <th:block th:replace="~{partials/sidebar}"></th:block>
 
       <div
         class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto"
       >
-        <th:block th:replace="~{partials/overlay :: *}"></th:block>
-        <th:block th:replace="~{partials/header :: *}"></th:block>
+        <th:block th:replace="~{partials/overlay}"></th:block>
+        <th:block th:replace="~{partials/header}"></th:block>
 
         <main>
           <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
             <div class="grid grid-cols-12 gap-4 md:gap-6">
               <div class="col-span-12 space-y-6 xl:col-span-7">
                 <th:block
-                  th:replace="~{partials/metric-group/metric-group-01 :: *}"
+                  th:replace="~{partials/metric-group/metric-group-01}"
                 ></th:block>
-                <th:block th:replace="~{partials/chart/chart-01 :: *}"></th:block>
+                <th:block th:replace="~{partials/chart/chart-01}"></th:block>
               </div>
               <div class="col-span-12 xl:col-span-5">
-                <th:block th:replace="~{partials/chart/chart-02 :: *}"></th:block>
+                <th:block th:replace="~{partials/chart/chart-02}"></th:block>
               </div>
 
               <div class="col-span-12">
-                <th:block th:replace="~{partials/chart/chart-03 :: *}"></th:block>
+                <th:block th:replace="~{partials/chart/chart-03}"></th:block>
               </div>
 
               <div class="col-span-12 xl:col-span-5">
-                <th:block th:replace="~{partials/map-01 :: *}"></th:block>
+                <th:block th:replace="~{partials/map-01}"></th:block>
               </div>
 
               <div class="col-span-12 xl:col-span-7">
-                <th:block th:replace="~{partials/table/table-01 :: *}"></th:block>
+                <th:block th:replace="~{partials/table/table-01}"></th:block>
               </div>
             </div>
           </div>
