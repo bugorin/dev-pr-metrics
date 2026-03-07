@@ -1,7 +1,6 @@
 package com.devprmetrics.domain.sync;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -38,7 +37,7 @@ public class SyncLog {
     }
 
     public LocalDateTime nextTimeToTry() {
-        LocalDateTime next = this.lastSuccess.plusHours(this.type.getTimeToTryHours());
+        LocalDateTime next = this.lastSuccess.plusMinutes(this.type.getTimeToTryMinutes());
         LocalDateTime now = LocalDateTime.now();
         if (next.isAfter(now)) {
             return now.minusSeconds(this.type.getDelaySeconds());

@@ -4,15 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum SyncLogOption {
-    PR_QUERY(1,12, 30);
+    PR_QUERY(30,30, 30);
 
     private final int startDaysAgo;
-    private final int timeToTryHours;
+    private final int timeToTryMinutes;
     private final int delaySeconds;
 
-    SyncLogOption(int startDaysAgo, int timeToTryHours, int delaySeconds) {
+    SyncLogOption(int startDaysAgo, int timeToTryMinutes, int delaySeconds) {
         this.startDaysAgo = startDaysAgo;
-        this.timeToTryHours = timeToTryHours;
+        this.timeToTryMinutes = timeToTryMinutes;
         this.delaySeconds = delaySeconds;
     }
 }
