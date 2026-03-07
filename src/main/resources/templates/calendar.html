@@ -10,21 +10,21 @@
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{'dark bg-gray-900': darkMode === true}"
   >
-    <th:block th:replace="~{partials/preloader :: *}"></th:block>
+    <th:block th:replace="~{partials/preloader}"></th:block>
 
     <div class="flex h-screen overflow-hidden">
-      <th:block th:replace="~{partials/sidebar :: *}"></th:block>
+      <th:block th:replace="~{partials/sidebar}"></th:block>
 
       <div
         class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden"
       >
-        <th:block th:replace="~{partials/overlay :: *}"></th:block>
-        <th:block th:replace="~{partials/header :: *}"></th:block>
+        <th:block th:replace="~{partials/overlay}"></th:block>
+        <th:block th:replace="~{partials/header}"></th:block>
 
         <main>
           <div class="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
             <div x-data="{ pageName: `Calendar`}" th:with="pageName='Calendar'">
-              <th:block th:replace="~{partials/breadcrumb :: *}"></th:block>
+              <th:block th:replace="~{partials/breadcrumb}"></th:block>
             </div>
 
             <div
@@ -34,7 +34,7 @@
             </div>
 
             <th:block
-              th:replace="~{partials/calendar-event-modal :: *}"
+              th:replace="~{partials/calendar-event-modal}"
             ></th:block>
           </div>
         </main>

@@ -11,13 +11,13 @@
     :class="{'dark bg-gray-900': darkMode === true}"
   >
     <!-- ===== Preloader Start ===== -->
-    <th:block th:replace="~{partials/preloader :: *}"></th:block>
+    <th:block th:replace="~{partials/preloader}"></th:block>
     <!-- ===== Preloader End ===== -->
 
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden">
       <!-- ===== Sidebar Start ===== -->
-      <th:block th:replace="~{partials/sidebar :: *}"></th:block>
+      <th:block th:replace="~{partials/sidebar}"></th:block>
       <!-- ===== Sidebar End ===== -->
 
       <!-- ===== Content Area Start ===== -->
@@ -25,11 +25,11 @@
         class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto"
       >
         <!-- Small Device Overlay Start -->
-        <th:block th:replace="~{partials/overlay :: *}"></th:block>
+        <th:block th:replace="~{partials/overlay}"></th:block>
         <!-- Small Device Overlay End -->
 
         <!-- ===== Header Start ===== -->
-        <th:block th:replace="~{partials/header :: *}"></th:block>
+        <th:block th:replace="~{partials/header}"></th:block>
         <!-- ===== Header End ===== -->
 
         <!-- ===== Main Content Start ===== -->
@@ -37,7 +37,7 @@
           <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
             <!-- Breadcrumb Start -->
             <div x-data="{ pageName: `Avatars`}">
-              <th:block th:replace="~{partials/breadcrumb :: *}"></th:block>
+              <th:block th:replace="~{partials/breadcrumb}"></th:block>
             </div>
             <!-- Breadcrumb End -->
 
@@ -53,7 +53,7 @@
                   </h3>
                 </div>
                 <div class="p-8 border-t border-gray-100 dark:border-gray-800">
-                  <th:block th:replace="~{partials/avatar/avatar-01 :: *}"></th:block>
+                  <th:block th:replace="~{partials/avatar/avatar-01}"></th:block>
                 </div>
               </div>
 
@@ -68,7 +68,7 @@
                   </h3>
                 </div>
                 <div class="p-8 border-t border-gray-100 dark:border-gray-800">
-                  <th:block th:replace="~{partials/avatar/avatar-02 :: *}"></th:block>
+                  <th:block th:replace="~{partials/avatar/avatar-02}"></th:block>
                 </div>
               </div>
 
@@ -83,7 +83,7 @@
                   </h3>
                 </div>
                 <div class="p-8 border-t border-gray-100 dark:border-gray-800">
-                  <th:block th:replace="~{partials/avatar/avatar-03 :: *}"></th:block>
+                  <th:block th:replace="~{partials/avatar/avatar-03}"></th:block>
                 </div>
               </div>
 
@@ -98,7 +98,7 @@
                   </h3>
                 </div>
                 <div class="p-8 border-t border-gray-100 dark:border-gray-800">
-                  <th:block th:replace="~{partials/avatar/avatar-04 :: *}"></th:block>
+                  <th:block th:replace="~{partials/avatar/avatar-04}"></th:block>
                 </div>
               </div>
             </div>
