@@ -10,6 +10,6 @@ public record UserApiResponse(Long id, String name, UserRole role, String ghImag
                 user.getName(),
                 user.getRole(),
                 "https://avatars.githubusercontent.com/u/" + user.getId(),
-                "https://github.com/" + user.getGithubUsername().toLowerCase());
+                "https://github.com/" + user.getUsername().toLowerCase());
     }
 }

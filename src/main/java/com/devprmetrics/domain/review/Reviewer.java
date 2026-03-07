@@ -25,7 +25,7 @@ public class Reviewer {
     private Pr pr;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "github_user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)

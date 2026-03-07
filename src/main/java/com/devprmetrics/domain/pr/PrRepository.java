@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PrRepository extends JpaRepository<Pr, Long> {
 
-    Optional<Pr> findByGithubId(Long githubId);
+    Optional<Pr> findByExternalId(Long externalId);
 }

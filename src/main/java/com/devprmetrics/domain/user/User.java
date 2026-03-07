@@ -13,8 +13,8 @@ public class User {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "github_username", nullable = false, length = 255)
-    private String githubUsername;
+    @Column(name = "username", nullable = false, length = 255)
+    private String username;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 20)
@@ -22,10 +22,10 @@ public class User {
 
     protected User() {}
 
-    public User(Long id, String name, String githubUsername) {
+    public User(Long id, String name, String username) {
         this.id = id;
         this.name = name;
-        this.githubUsername = githubUsername;
+        this.username = username;
         this.role = UserRole.REGULAR;
     }
 }

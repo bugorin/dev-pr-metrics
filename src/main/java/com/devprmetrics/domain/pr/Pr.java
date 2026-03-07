@@ -22,44 +22,44 @@ public class Pr {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "github_id", nullable = false, unique = true)
-    private Long githubId;
+    @Column(name = "external_id", nullable = false, unique = true)
+    private Long externalId;
 
-    @Column(name = "github_number", nullable = false)
-    private Integer githubNumber;
+    @Column(name = "number", nullable = false)
+    private Integer number;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "github_author_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "github_repository_id", nullable = false)
+    @JoinColumn(name = "repository_id", nullable = false)
     private Repo repository;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "github_status", nullable = false, length = 20)
-    private PrStatus githubStatus;
+    @Column(name = "status", nullable = false, length = 20)
+    private PrStatus status;
 
-    @Column(name = "github_title", length = 255)
-    private String githubTitle;
+    @Column(name = "title", length = 255)
+    private String title;
 
-    @Column(name = "github_draft", nullable = false)
-    private boolean githubDraft;
+    @Column(name = "draft", nullable = false)
+    private boolean draft;
 
-    @Column(name = "github_merged", nullable = false)
-    private boolean githubMerged;
+    @Column(name = "merged", nullable = false)
+    private boolean merged;
 
-    @Column(name = "github_merged_at")
-    private LocalDateTime githubMergedAt;
+    @Column(name = "merged_at")
+    private LocalDateTime mergedAt;
 
-    @Column(name = "github_closed_at")
-    private LocalDateTime githubClosedAt;
+    @Column(name = "closed_at")
+    private LocalDateTime closedAt;
 
-    @Column(name = "github_created_at", nullable = false)
-    private LocalDateTime githubCreatedAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "github_updated_at", nullable = false)
-    private LocalDateTime githubUpdatedAt;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     @NotNull
     @JdbcTypeCode(SqlTypes.JSON)
@@ -73,67 +73,67 @@ public class Pr {
     protected Pr() {
     }
 
-    public Pr(Long githubId, Integer githubNumber, User author, Repo repository, PrStatus githubStatus,
-              String githubTitle, boolean githubDraft, boolean githubMerged,
-              LocalDateTime githubMergedAt, LocalDateTime githubClosedAt,
-              String githubHtmlUrl, int githubAdditions, int githubDeletions,
-              int githubFileChanges, int githubOpenReviewComments,
-              int githubComments, int githubCommits,
-              String githubBaseRef, String githubHeadRef,
-              List<String> githubLabels, List<Long> githubRequestedReviewers,
-              LocalDateTime githubCreatedAt, LocalDateTime githubUpdatedAt) {
-        this.githubId = githubId;
-        this.githubNumber = githubNumber;
+    public Pr(Long externalId, Integer number, User author, Repo repository, PrStatus status,
+              String title, boolean draft, boolean merged,
+              LocalDateTime mergedAt, LocalDateTime closedAt,
+              String htmlUrl, int additions, int deletions,
+              int fileChanges, int openReviewComments,
+              int comments, int commits,
+              String baseRef, String headRef,
+              List<String> labels, List<Long> requestedReviewers,
+              LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.externalId = externalId;
+        this.number = number;
         this.author = author;
         this.repository = repository;
-        this.githubStatus = githubStatus;
-        this.githubTitle = githubTitle;
-        this.githubDraft = githubDraft;
-        this.githubMerged = githubMerged;
-        this.githubMergedAt = githubMergedAt;
-        this.githubClosedAt = githubClosedAt;
+        this.status = status;
+        this.title = title;
+        this.draft = draft;
+        this.merged = merged;
+        this.mergedAt = mergedAt;
+        this.closedAt = closedAt;
         this.info = new PrInfo(
-                githubHtmlUrl,
-                githubAdditions,
-                githubDeletions,
-                githubFileChanges,
-                githubOpenReviewComments,
-                githubComments,
-                githubCommits,
-                githubBaseRef,
-                githubHeadRef,
-                githubLabels,
-                githubRequestedReviewers
+                htmlUrl,
+                additions,
+                deletions,
+                fileChanges,
+                openReviewComments,
+                comments,
+                commits,
+                baseRef,
+                headRef,
+                labels,
+                requestedReviewers
         );
-        this.githubCreatedAt = githubCreatedAt;
-        this.githubUpdatedAt = githubUpdatedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Pr merge(Pr pr) {
-        this.setGithubId(pr.getGithubId());
-        this.setGithubNumber(pr.getGithubNumber());
+        this.setExternalId(pr.getExternalId());
+        this.setNumber(pr.getNumber());
         this.setRepository(pr.getRepository());
-        this.setGithubStatus(pr.getGithubStatus());
-        this.setGithubTitle(pr.getGithubTitle());
-        this.setGithubDraft(pr.isGithubDraft());
-        this.setGithubMerged(pr.isGithubMerged());
-        this.setGithubMergedAt(pr.getGithubMergedAt());
-        this.setGithubClosedAt(pr.getGithubClosedAt());
+        this.setStatus(pr.getStatus());
+        this.setTitle(pr.getTitle());
+        this.setDraft(pr.isDraft());
+        this.setMerged(pr.isMerged());
+        this.setMergedAt(pr.getMergedAt());
+        this.setClosedAt(pr.getClosedAt());
         this.info = new PrInfo(
-                pr.getGithubHtmlUrl(),
-                pr.getGithubAdditions(),
-                pr.getGithubDeletions(),
-                pr.getGithubFileChanges(),
-                pr.getGithubOpenReviewComments(),
-                pr.getGithubComments(),
-                pr.getGithubCommits(),
-                pr.getGithubBaseRef(),
-                pr.getGithubHeadRef(),
-                pr.getGithubLabels(),
-                pr.getGithubRequestedReviewers()
+                pr.getHtmlUrl(),
+                pr.getAdditions(),
+                pr.getDeletions(),
+                pr.getFileChanges(),
+                pr.getOpenReviewComments(),
+                pr.getComments(),
+                pr.getCommits(),
+                pr.getBaseRef(),
+                pr.getHeadRef(),
+                pr.getLabels(),
+                pr.getRequestedReviewers()
         );
-        this.setGithubCreatedAt(pr.getGithubCreatedAt());
-        this.setGithubUpdatedAt(pr.getGithubUpdatedAt());
+        this.setCreatedAt(pr.getCreatedAt());
+        this.setUpdatedAt(pr.getUpdatedAt());
 
         for (Reviewer reviewer : pr.getReviewers()) {
             this.addOrUpdate(reviewer);
@@ -142,48 +142,48 @@ public class Pr {
         return this;
     }
 
-    public int getGithubOpenReviewComments() {
-        return this.info.getGithubOpenReviewComments();
+    public int getOpenReviewComments() {
+        return this.info.getOpenReviewComments();
     }
 
-    public int getGithubFileChanges() {
-        return this.info.getGithubFileChanges();
+    public int getFileChanges() {
+        return this.info.getFileChanges();
     }
 
-    public int getGithubDeletions() {
-        return this.info.getGithubDeletions();
+    public int getDeletions() {
+        return this.info.getDeletions();
     }
 
-    public int getGithubAdditions() {
-        return this.info.getGithubAdditions();
+    public int getAdditions() {
+        return this.info.getAdditions();
     }
 
-    public String getGithubHtmlUrl() {
-        return this.info.getGithubHtmlUrl();
+    public String getHtmlUrl() {
+        return this.info.getHtmlUrl();
     }
 
-    public int getGithubComments() {
-        return this.info.getGithubComments();
+    public int getComments() {
+        return this.info.getComments();
     }
 
-    public int getGithubCommits() {
-        return this.info.getGithubCommits();
+    public int getCommits() {
+        return this.info.getCommits();
     }
 
-    public String getGithubBaseRef() {
-        return this.info.getGithubBaseRef();
+    public String getBaseRef() {
+        return this.info.getBaseRef();
     }
 
-    public String getGithubHeadRef() {
-        return this.info.getGithubHeadRef();
+    public String getHeadRef() {
+        return this.info.getHeadRef();
     }
 
-    public List<String> getGithubLabels() {
-        return this.info.getGithubLabels();
+    public List<String> getLabels() {
+        return this.info.getLabels();
     }
 
-    public List<Long> getGithubRequestedReviewers() {
-        return this.info.getGithubRequestedReviewers();
+    public List<Long> getRequestedReviewers() {
+        return this.info.getRequestedReviewers();
     }
 
     public void addOrUpdate(Reviewer reviewer) {
@@ -204,16 +204,16 @@ public class Pr {
     @NoArgsConstructor
     @Getter
     public static class PrInfo implements Serializable {
-        private String githubHtmlUrl;
-        private int githubAdditions;
-        private int githubDeletions;
-        private int githubFileChanges;
-        private int githubOpenReviewComments;
-        private int githubComments;
-        private int githubCommits;
-        private String githubBaseRef;
-        private String githubHeadRef;
-        private List<String> githubLabels = new ArrayList<>();
-        private List<Long> githubRequestedReviewers = new ArrayList<>();
+        private String htmlUrl;
+        private int additions;
+        private int deletions;
+        private int fileChanges;
+        private int openReviewComments;
+        private int comments;
+        private int commits;
+        private String baseRef;
+        private String headRef;
+        private List<String> labels = new ArrayList<>();
+        private List<Long> requestedReviewers = new ArrayList<>();
     }
 }

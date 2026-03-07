@@ -1,7 +1,7 @@
 CREATE TABLE `User` (
     id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    github_username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     role ENUM('REGULAR', 'ADMIN') NOT NULL DEFAULT 'REGULAR',
     PRIMARY KEY (id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
