@@ -2,6 +2,7 @@ CREATE TABLE `User` (
     id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
+    is_bot TINYINT(1) NOT NULL DEFAULT 0,
     role ENUM('REGULAR', 'ADMIN') NOT NULL DEFAULT 'REGULAR',
     PRIMARY KEY (id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

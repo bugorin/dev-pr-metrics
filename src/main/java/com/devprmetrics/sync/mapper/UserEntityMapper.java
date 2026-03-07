@@ -3,6 +3,7 @@ package com.devprmetrics.sync.mapper;
 import com.devprmetrics.domain.user.User;
 import org.kohsuke.github.GHUser;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public record UserEntityMapper() {
@@ -16,11 +17,18 @@ public record UserEntityMapper() {
             return new User(
                     ghUser.getId(),
                     filterString(ghUser.getName()).orElse("github-user-" + ghUser.getId()),
-                    filterString(ghUser.getLogin()).orElse("user-" + ghUser.getId())
+                    filterString(ghUser.getLogin()).orElse("user-" + ghUser.getId()),
+                    isBot(ghUser)
             );
         }catch (Exception e) {
             throw new IllegalArgumentException("Could not map GHUser to user entity", e);
         }
+    }
+
+    private static boolean isBot(GHUser ghUser) throws IOException {
+        if ("Bot".equalsIgnoreCase(ghUser.getType())) return true;
+        String login = ghUser.getLogin();
+        return login != null && login.endsWith("[bot]");
     }
 
     private static Optional<String> filterString(String name) {
