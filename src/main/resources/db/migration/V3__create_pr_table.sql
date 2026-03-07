@@ -5,6 +5,7 @@ CREATE TABLE `Pr` (
     author_id BIGINT NOT NULL,
     repository_id BIGINT NOT NULL,
     status ENUM('OPEN','CLOSED') NOT NULL,
+    size ENUM('PP','P','M','G','GG') NOT NULL DEFAULT 'M',
     title VARCHAR(255) NULL,
     draft TINYINT(1) NOT NULL DEFAULT 0,
     merged TINYINT(1) NOT NULL DEFAULT 0,

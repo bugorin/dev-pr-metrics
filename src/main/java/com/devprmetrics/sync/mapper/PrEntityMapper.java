@@ -3,8 +3,9 @@ package com.devprmetrics.sync.mapper;
 import com.devprmetrics.domain.pr.Pr;
 import com.devprmetrics.domain.pr.PrStatus;
 import com.devprmetrics.domain.repo.Repo;
-import java.util.List;
 import org.kohsuke.github.*;
+
+import java.util.List;
 
 import static com.devprmetrics.config.LocalDateTimeUtils.toLocalDateTime;
 
@@ -71,5 +72,6 @@ public record PrEntityMapper() {
             default -> throw new IllegalArgumentException("Unknown GHIssueState: " + state);
         };
     }
+
 
 }

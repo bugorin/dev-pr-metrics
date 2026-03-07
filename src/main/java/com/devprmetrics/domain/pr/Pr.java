@@ -40,6 +40,10 @@ public class Pr {
     @Column(name = "status", nullable = false, length = 20)
     private PrStatus status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "size", nullable = false, length = 3)
+    private PrSize size = PrSize.M;
+
     @Column(name = "title", length = 255)
     private String title;
 
@@ -87,6 +91,7 @@ public class Pr {
         this.author = author;
         this.repository = repository;
         this.status = status;
+        this.size = PrSize.from(additions, deletions);
         this.title = title;
         this.draft = draft;
         this.merged = merged;
@@ -115,6 +120,7 @@ public class Pr {
         this.setRepository(pr.getRepository());
         this.setStatus(pr.getStatus());
         this.setTitle(pr.getTitle());
+        this.setSize(pr.getSize());
         this.setDraft(pr.isDraft());
         this.setMerged(pr.isMerged());
         this.setMergedAt(pr.getMergedAt());
@@ -134,6 +140,7 @@ public class Pr {
         );
         this.setCreatedAt(pr.getCreatedAt());
         this.setUpdatedAt(pr.getUpdatedAt());
+        this.setSize(pr.getSize());
 
         for (Reviewer reviewer : pr.getReviewers()) {
             this.addOrUpdate(reviewer);
