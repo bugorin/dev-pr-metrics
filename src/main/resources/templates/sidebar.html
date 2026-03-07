@@ -8,7 +8,7 @@
     :class="sidebarToggle ? 'justify-center' : 'justify-between'"
     class="sidebar-header flex items-center gap-2 pb-7 pt-8"
   >
-    <a href="index.html">
+    <a href="/index">
       <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
         <img class="dark:hidden" src="/assets/images/logo/logo.svg" alt="Logo" />
         <img
@@ -123,7 +123,7 @@
               >
                 <li>
                   <a
-                    href="index.html"
+                    href="/index"
                     class="menu-dropdown-item group"
                     :class="page === 'ecommerce' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -132,7 +132,7 @@
                 </li>
                 <li>
                   <a
-                    href="analytics.html"
+                    href="/analytics"
                     class="menu-dropdown-item group"
                     :class="page === 'analytics' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -150,7 +150,7 @@
                 <li>
                   <a
                     class="menu-dropdown-item group"
-                    href="marketing.html"
+                    href="/marketing"
                     :class="page === 'marketing' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
                     Marketing
@@ -166,7 +166,7 @@
                 </li>
                 <li>
                   <a
-                    href="crm.html"
+                    href="/crm"
                     class="menu-dropdown-item group"
                     :class="page === 'crm' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -183,7 +183,7 @@
                 </li>
                 <li>
                   <a
-                    href="stocks.html"
+                    href="/stocks"
                     class="menu-dropdown-item group"
                     :class="page === 'stocks' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -213,7 +213,7 @@
           <!-- Menu Item Calendar -->
           <li>
             <a
-              href="calendar.html"
+              href="/calendar"
               @click="selected = (selected === 'Calendar' ? '':'Calendar')"
               class="menu-item group"
               :class=" (selected === 'Calendar') && (page === 'calendar') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -247,7 +247,7 @@
           <!-- Menu Item Profile -->
           <li>
             <a
-              href="profile.html"
+              href="/profile"
               @click="selected = (selected === 'Profile' ? '':'Profile')"
               class="menu-item group"
               :class=" (selected === 'Profile') && (page === 'profile') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -339,7 +339,7 @@
               >
                 <li>
                   <a
-                    href="task-list.html"
+                    href="/task-list"
                     class="menu-dropdown-item group"
                     :class="page === 'taskList' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -356,7 +356,7 @@
                 </li>
                 <li>
                   <a
-                    href="task-kanban.html"
+                    href="/task-kanban"
                     class="menu-dropdown-item group"
                     :class="page === 'taskKanban' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -438,7 +438,7 @@
               >
                 <li>
                   <a
-                    href="form-elements.html"
+                    href="/form-elements"
                     class="menu-dropdown-item group"
                     :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -447,7 +447,7 @@
                 </li>
                 <li>
                   <a
-                    href="form-layout.html"
+                    href="/form-layout"
                     class="menu-dropdown-item group"
                     :class="page === 'formLayout' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -521,7 +521,7 @@
               >
                 <li>
                   <a
-                    href="basic-tables.html"
+                    href="/basic-tables"
                     class="menu-dropdown-item group"
                     :class="page === 'basicTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -530,7 +530,7 @@
                 </li>
                 <li>
                   <a
-                    href="data-tables.html"
+                    href="/data-tables"
                     class="menu-dropdown-item group"
                     :class="page === 'dataTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -612,7 +612,7 @@
               >
                 <li>
                   <a
-                    href="file-manager.html"
+                    href="/file-manager"
                     class="menu-dropdown-item group"
                     :class="page === 'fileManager' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -629,7 +629,7 @@
                 </li>
                 <li>
                   <a
-                    href="pricing-tables.html"
+                    href="/pricing-tables"
                     class="menu-dropdown-item group"
                     :class="page === 'pricingTables' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -646,7 +646,7 @@
                 </li>
                 <li>
                   <a
-                    href="faq.html"
+                    href="/faq"
                     class="menu-dropdown-item group"
                     :class="page === 'faq' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -663,7 +663,7 @@
                 </li>
                 <li>
                   <a
-                    href="blank.html"
+                    href="/blank"
                     class="menu-dropdown-item group"
                     :class="page === 'blank' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -680,7 +680,7 @@
                 </li>
                 <li>
                   <a
-                    href="404.html"
+                    href="/404"
                     class="menu-dropdown-item group"
                     :class="page === 'page404' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -697,7 +697,7 @@
                 </li>
                 <li>
                   <a
-                    href="500.html"
+                    href="/500"
                     class="menu-dropdown-item group"
                     :class="page === 'page500' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -714,7 +714,7 @@
                 </li>
                 <li>
                   <a
-                    href="503.html"
+                    href="/503"
                     class="menu-dropdown-item group"
                     :class="page === 'page503' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -731,7 +731,7 @@
                 </li>
                 <li>
                   <a
-                    href="coming-soon.html"
+                    href="/coming-soon"
                     class="menu-dropdown-item group"
                     :class="page === 'comingSoon' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -748,7 +748,7 @@
                 </li>
                 <li>
                   <a
-                    href="maintenance.html"
+                    href="/maintenance"
                     class="menu-dropdown-item group"
                     :class="page === 'termsCondition' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -765,7 +765,7 @@
                 </li>
                 <li>
                   <a
-                    href="success.html"
+                    href="/success"
                     class="menu-dropdown-item group"
                     :class="page === 'success' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -820,7 +820,7 @@
           <!-- Menu Item Chat -->
           <li>
             <a
-              href="chat.html"
+              href="/chat"
               @click="selected = (selected === 'Chat' ? '':'Chat')"
               class="menu-item group"
               :class=" (selected === 'Chat') && (page === 'chat') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -912,7 +912,7 @@
               >
                 <li>
                   <a
-                    href="inbox.html"
+                    href="/inbox"
                     class="menu-dropdown-item group"
                     :class="page === 'inbox' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -929,7 +929,7 @@
                 </li>
                 <li>
                   <a
-                    href="inbox-details.html"
+                    href="/inbox-details"
                     class="menu-dropdown-item group"
                     :class="page === 'inboxDetails' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -953,7 +953,7 @@
           <!-- Menu Item Invoice -->
           <li>
             <a
-              href="invoice.html"
+              href="/invoice"
               @click="selected = (selected === 'Invoice' ? '':'Invoice')"
               class="menu-item group"
               :class=" (selected === 'Invoice') && (page === 'invoice') ? 'menu-item-active' : 'menu-item-inactive'"
@@ -1076,7 +1076,7 @@
               >
                 <li>
                   <a
-                    href="line-chart.html"
+                    href="/line-chart"
                     class="menu-dropdown-item group"
                     :class="page === 'lineChart' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1093,7 +1093,7 @@
                 </li>
                 <li>
                   <a
-                    href="bar-chart.html"
+                    href="/bar-chart"
                     class="menu-dropdown-item group"
                     :class="page === 'barChart' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1110,7 +1110,7 @@
                 </li>
                 <li>
                   <a
-                    href="pie-chart.html"
+                    href="/pie-chart"
                     class="menu-dropdown-item group"
                     :class="page === 'pieChart' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1192,7 +1192,7 @@
               >
                 <li>
                   <a
-                    href="alerts.html"
+                    href="/alerts"
                     class="menu-dropdown-item group"
                     :class="page === 'alerts' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1210,7 +1210,7 @@
 
                 <li>
                   <a
-                    href="buttons.html"
+                    href="/buttons"
                     class="menu-dropdown-item group"
                     :class="page === 'buttons' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1227,7 +1227,7 @@
                 </li>
                 <li>
                   <a
-                    href="images.html"
+                    href="/images"
                     class="menu-dropdown-item group"
                     :class="page === 'images' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1244,7 +1244,7 @@
                 </li>
                 <li>
                   <a
-                    href="pagination.html"
+                    href="/pagination"
                     class="menu-dropdown-item group"
                     :class="page === 'pagination' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1326,7 +1326,7 @@
               >
                 <li>
                   <a
-                    href="signin.html"
+                    href="/signin"
                     class="menu-dropdown-item group"
                     :class="page === 'signin' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1335,7 +1335,7 @@
                 </li>
                 <li>
                   <a
-                    href="signup.html"
+                    href="/signup"
                     class="menu-dropdown-item group"
                     :class="page === 'signup' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
@@ -1344,7 +1344,7 @@
                 </li>
                 <li>
                   <a
-                    href="advanced-chart.html"
+                    href="/advanced-chart"
                     class="menu-dropdown-item group"
                     :class="page === 'advancedChart' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
