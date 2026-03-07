@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head(title)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title}">Dashboard</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+  </head>
+
+  <body>
+    <header th:fragment="header">
+      <nav class="p-4 border-b">Header</nav>
+    </header>
+
+    <aside th:fragment="sidebar">
+      <div class="p-4 border-r">Sidebar</div>
+    </aside>
+
+    <script th:fragment="scripts" defer th:src="@{/assets/js/app.js}"></script>
+  </body>
+</html>
