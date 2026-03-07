@@ -1,9 +1,9 @@
-package com.devprmetrics.api.teammember;
+package com.devprmetrics.api.groupmember;
 
-import com.devprmetrics.domain.team.Team;
-import com.devprmetrics.domain.team.TeamRepository;
-import com.devprmetrics.domain.teammember.TeamMember;
-import com.devprmetrics.domain.teammember.TeamMemberRepository;
+import com.devprmetrics.domain.group.Group;
+import com.devprmetrics.domain.group.GroupRepository;
+import com.devprmetrics.domain.teammember.GroupMember;
+import com.devprmetrics.domain.teammember.GroupMemberRepository;
 import com.devprmetrics.domain.user.User;
 import com.devprmetrics.domain.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,55 +19,55 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class TeamMemberApi {
 
-    private final TeamMemberRepository teamMemberRepository;
-    private final TeamRepository teamRepository;
+    private final GroupMemberRepository groupMemberRepository;
+    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
     public TeamMemberApi(
-            TeamMemberRepository teamMemberRepository,
-            TeamRepository teamRepository,
+            GroupMemberRepository groupMemberRepository,
+            GroupRepository groupRepository,
             UserRepository userRepository) {
-        this.teamMemberRepository = teamMemberRepository;
-        this.teamRepository = teamRepository;
+        this.groupMemberRepository = groupMemberRepository;
+        this.groupRepository = groupRepository;
         this.userRepository = userRepository;
     }
 
     @Operation(summary = "Lista vínculos de membros com paginação")
-    @GetMapping("/api/team-members")
+    @GetMapping("/api/group-members")
     public Page<TeamMemberApiResponse> listAll(
             @ParameterObject
             @PageableDefault(page = 0, size = 20, sort = "id") Pageable pageable) {
-        return teamMemberRepository.findAll(pageable).map(TeamMemberApiResponse::from);
+        return groupMemberRepository.findAll(pageable).map(TeamMemberApiResponse::from);
     }
 
     @Operation(summary = "Lista membros por time com paginação")
-    @GetMapping("/api/teams/{teamId}/members")
-    public Page<TeamMemberApiResponse> listByTeam(
-            @PathVariable Long teamId,
+    @GetMapping("/api/groups/{groupId}/members")
+    public Page<TeamMemberApiResponse> listByGroup(
+            @PathVariable Long groupId,
             @ParameterObject
             @PageableDefault(page = 0, size = 20, sort = "id") Pageable pageable) {
-        if (!teamRepository.existsById(teamId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "team not found");
+        if (!groupRepository.existsById(groupId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "group not found");
         }
 
-        return teamMemberRepository.findByTeamId(teamId, pageable).map(TeamMemberApiResponse::from);
+        return groupMemberRepository.findByGroupId(groupId, pageable).map(TeamMemberApiResponse::from);
     }
 
     @Operation(summary = "Cadastra vínculo de usuário em time")
-    @PostMapping("/api/team-members")
+    @PostMapping("/api/group-members")
     @ResponseStatus(HttpStatus.CREATED)
     public TeamMemberApiResponse create(@Valid @RequestBody TeamMemberApiRequest request) {
-        Team team = teamRepository.findById(request.teamId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "team not found"));
+        Group group = groupRepository.findById(request.groupId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "group not found"));
 
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
-        if (teamMemberRepository.existsByTeamIdAndUserId(team.getId(), user.getId())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "team member already exists");
+        if (groupMemberRepository.existsByGroupIdAndUserId(group.getId(), user.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "group member already exists");
         }
 
-        TeamMember saved = teamMemberRepository.save(new TeamMember(team, user, request.role()));
+        GroupMember saved = groupMemberRepository.save(new GroupMember(group, user, request.role()));
         return TeamMemberApiResponse.from(saved);
     }
 }

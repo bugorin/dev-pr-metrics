@@ -1,11 +1,12 @@
-package com.devprmetrics.domain.team;
+package com.devprmetrics.domain.group;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "`Group`")
 @Data
-public class Team {
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +15,10 @@ public class Team {
     @Column(name = "name", nullable = false, length = 255, unique = true)
     private String name;
 
-    protected Team() {
+    protected Group() {
     }
 
-    public Team(String name) {
+    public Group(String name) {
         this.name = name;
     }
 }

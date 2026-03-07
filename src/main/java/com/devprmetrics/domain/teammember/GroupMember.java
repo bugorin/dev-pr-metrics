@@ -1,21 +1,21 @@
 package com.devprmetrics.domain.teammember;
 
-import com.devprmetrics.domain.team.Team;
+import com.devprmetrics.domain.group.Group;
 import com.devprmetrics.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class TeamMember {
+public class GroupMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
+    @JoinColumn(name = "group_id", nullable = false)
+    private Group group;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,11 +25,11 @@ public class TeamMember {
     @Column(name = "role", nullable = false, length = 20)
     private TeamMemberRole role;
 
-    protected TeamMember() {
+    protected GroupMember() {
     }
 
-    public TeamMember(Team team, User user, TeamMemberRole role) {
-        this.team = team;
+    public GroupMember(Group group, User user, TeamMemberRole role) {
+        this.group = group;
         this.user = user;
         this.role = role;
     }
