@@ -33,4 +33,8 @@ public class GroupMember {
         this.user = user;
         this.role = role;
     }
+
+    public String getName() {
+        return user.getName();
+    }
 }

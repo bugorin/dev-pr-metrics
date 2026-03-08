@@ -1,0 +1,44 @@
+<article th:fragment="card"
+         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-theme-xs dark:border-gray-800 dark:bg-white/[0.03]"
+         x-data="{ openMenu: false }">
+    <div class="flex items-start justify-between gap-4">
+        <div>
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white/90" x-text="team.name"></h2>
+        </div>
+        <div class="relative">
+            <button class="rounded-lg p-1 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                    type="button"
+                    @click="openMenu = !openMenu"
+                    @click.outside="openMenu = false">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="5" r="1.75" fill="currentColor"></circle>
+                    <circle cx="12" cy="12" r="1.75" fill="currentColor"></circle>
+                    <circle cx="12" cy="19" r="1.75" fill="currentColor"></circle>
+                </svg>
+            </button>
+            <div x-show="openMenu" x-transition class="absolute right-0 z-20 mt-2 w-32 rounded-lg border border-gray-200 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-900">
+                <button class="block w-full rounded-md px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-white/[0.12]" type="button">Editar</button>
+                <button class="block w-full rounded-md px-3 py-2 text-left text-sm text-error-600 hover:bg-gray-100 dark:text-error-400 dark:hover:bg-white/[0.06]" type="button">Excluir</button>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 flex items-center justify-between">
+        <div class="flex items-center -space-x-2">
+            <template x-for="(avatar, avatarIndex) in (team.avatars || []).slice(0, 8)" :key="(team.id ?? 'team') + '-avatar-' + avatarIndex">
+                <div class="relative transition-transform hover:z-20" x-data="{ showName: false }" @mouseenter="showName = true" @mouseleave="showName = false">
+                    <img class="h-8 w-8 rounded-full border-2 border-white transition-transform hover:-translate-y-0.5 dark:border-gray-900"
+                         :src="avatar.imageUrl"
+                         :alt="avatar.name"
+                         :title="avatar.name">
+                    <div x-show="showName"
+                         x-transition
+                         class="pointer-events-none absolute -top-9 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs text-white shadow-lg dark:bg-gray-700"
+                         x-text="avatar.name"></div>
+                </div>
+            </template>
+            <span x-show="(team.avatars || []).length > 8"
+                  class="inline-flex h-8 min-w-8 items-center justify-center rounded-full border-2 border-white bg-gray-100 px-2 text-xs font-medium text-gray-700 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-200"
+                  x-text="'+' + ((team.avatars || []).length - 8)"></span>
+        </div>
+    </div>
+</article>

@@ -1,13 +1,67 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/admin :: page('Times | Dev metrics', ~{::main})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/admin :: page('Groups | TailAdmin - Tailwind CSS Admin Dashboard Template', ~{::main})}">
+<main class="p-6 sm:p-8" x-data="groupsPage()" x-init="init()">
+    <div class="mx-auto w-full max-w-7xl space-y-6">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-800 dark:text-white/90">Times</h1>
+            </div>
+            <button
+                    class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+                    type="button">
+                Cadastrar
+            </button>
+        </div>
 
-<main class="p-6 sm:p-8">
-    <div class="mx-auto w-full max-w-7xl">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-white/90">Groups</h1>
-        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Internal groups page using admin layout template.</p>
+        <div x-show="loading" class="text-sm text-gray-500 dark:text-gray-400">Carregando times...</div>
+        <div x-show="error" x-text="error" class="text-sm text-error-600 dark:text-error-400"></div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <template x-for="team in teams" :key="team.id">
+                <th:block th:replace="~{partials/team/card-item :: card}"></th:block>
+            </template>
+        </div>
     </div>
-</main>
 
+    <script>
+        function groupsPage() {
+            return {
+                loading: false,
+                error: '',
+                teams: [],
+                async init() {
+                    this.loading = true;
+                    this.error = '';
+                    try {
+                        const response = await fetch('/api/groups', { headers: { Accept: 'application/json' } });
+                        if (!response.ok) {
+                            throw new Error('Falha ao carregar times');
+                        }
+                        const payload = await response.json();
+                        const groups = Array.isArray(payload?.content) ? payload.content : [];
+                        this.teams = groups
+                            .filter(group => group && group.id != null)
+                            .map(group => ({
+                                id: group.id,
+                                name: group.name,
+                                avatars: Array.isArray(group.members)
+                                    ? group.members
+                                        .filter(member => member && member.imageUrl)
+                                        .map(member => ({
+                                            name: member.name || 'Integrante',
+                                            imageUrl: member.imageUrl
+                                        }))
+                                    : []
+                            }));
+                    } catch (e) {
+                        this.error = e.message || 'Erro ao carregar times';
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            };
+        }
+    </script>
+</main>
 </html>

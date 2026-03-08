@@ -1,7 +1,10 @@
 package com.devprmetrics.domain.group;
 
+import com.devprmetrics.domain.teammember.GroupMember;
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "`Group`")
@@ -14,6 +17,9 @@ public class Group {
 
     @Column(name = "name", nullable = false, length = 255, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "group")
+    private List<GroupMember> groupMembers = new ArrayList<>();
 
     protected Group() {
     }
