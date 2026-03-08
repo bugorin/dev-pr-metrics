@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="page(title, content)">
+<head th:replace="~{fragments/layout :: head(${title})}">
+    <meta charset="UTF-8" />
+</head>
+<body x-data="{ page: 'blank', loaded: true, darkMode: false, stickyMenu: false, sidebarToggle: false, scrollTop: false }"
+      x-init="darkMode = JSON.parse(localStorage.getItem('darkMode')); $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+      :class="{'dark bg-gray-900': darkMode === true}">
+
+<th:block th:replace="~{partials/preloader}"></th:block>
+<div class="flex h-screen overflow-hidden">
+    <th:block th:replace="~{partials/sidebar}"></th:block>
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <th:block th:replace="~{partials/overlay}"></th:block>
+        <th:block th:replace="~{partials/header}"></th:block>
+        <th:block th:replace="${content}"></th:block>
+    </div>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
